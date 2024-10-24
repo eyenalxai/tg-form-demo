@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 									<Link href={"/default"}>Default</Link>
 								</Button>
 								<Button variant={"outline"} asChild>
-									<Link href={"/modal"}>Modal</Link>
+									<Link href={"/dialog"}>Dialog</Link>
 								</Button>
 								<Button variant={"outline"} asChild>
 									<Link href={"/hide"}>Hide</Link>
