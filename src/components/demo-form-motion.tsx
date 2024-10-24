@@ -5,16 +5,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { AnimatePresence, MotionConfig, motion } from "framer-motion"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { MotionConfig, motion } from "framer-motion"
+import { useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { z } from "zod"
-type DemoFormProps = {
-	className?: string
-}
-import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
-import { jack } from "jackspeak"
-import { type Control, Controller } from "react-hook-form"
+
+import type { Control } from "react-hook-form"
 
 const formSchema = z.object({
 	inputOne: z.string(),
@@ -94,6 +90,10 @@ const InputField = ({ focusedField, order, name, control, handleFocus, handleBlu
 			</motion.div>
 		</motion.div>
 	)
+}
+
+type DemoFormProps = {
+	className?: string
 }
 
 export const DemoFormMotion = ({ className }: DemoFormProps) => {
