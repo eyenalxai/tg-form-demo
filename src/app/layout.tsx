@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 		<html lang="en" suppressHydrationWarning>
 			<body className={cn("font-sans", "antialiased", GeistSans.variable, GeistMono.variable)}>
 				<Providers attribute="class" defaultTheme="system" enableSystem>
-					<main className={cn("container", "max-w-xs", "mx-auto", "mt-12")}>
+					<main className={cn("container", "max-w-xs", "mx-auto", "my-12")}>
 						<div className={cn("grid", "grid-cols-2", "gap-2")}>
 							<Button variant={"outline"} asChild>
 								<Link href={"/default"}>Default</Link>
