@@ -22,7 +22,7 @@ const formSchema = z.object({
 	inputSeven: z.string()
 })
 
-type OofProps = {
+type InputFieldProps = {
 	focusedField: keyof z.infer<typeof formSchema> | null
 	order: number
 	name: keyof z.infer<typeof formSchema>
@@ -31,7 +31,7 @@ type OofProps = {
 	handleBlur: (onBlur: () => void) => void
 }
 
-const InputField = ({ focusedField, order, name, control, handleFocus, handleBlur }: OofProps) => {
+const InputField = ({ focusedField, order, name, control, handleFocus, handleBlur }: InputFieldProps) => {
 	const {
 		field: { onBlur, ...field }
 	} = useController({
