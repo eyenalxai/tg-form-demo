@@ -8,7 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-export const DemoForm = () => {
+type DemoFormProps = {
+	className?: string
+}
+
+export const DemoForm = ({ className }: DemoFormProps) => {
 	const formSchema = z.object({
 		inputOne: z.string(),
 		inputTwo: z.string(),
@@ -38,7 +42,7 @@ export const DemoForm = () => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className={cn("space-y-6")}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className={cn("space-y-6", className)}>
 				<FormField
 					control={form.control}
 					name="inputOne"
