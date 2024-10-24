@@ -48,9 +48,9 @@ export const DemoForm = ({ className }: DemoFormProps) => {
 					name="inputOne"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Input One</FormLabel>
+							<FormLabel>{field.name}</FormLabel>
 							<FormControl>
-								<Input placeholder="input" {...field} />
+								<Input placeholder={field.name} {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -61,9 +61,9 @@ export const DemoForm = ({ className }: DemoFormProps) => {
 					name="inputTwo"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Input Two</FormLabel>
+							<FormLabel>{field.name}</FormLabel>
 							<FormControl>
-								<Input placeholder="input" {...field} />
+								<Input placeholder={field.name} {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -74,9 +74,9 @@ export const DemoForm = ({ className }: DemoFormProps) => {
 					name="inputThree"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Input Three</FormLabel>
+							<FormLabel>{field.name}</FormLabel>
 							<FormControl>
-								<Input placeholder="input" {...field} />
+								<Input placeholder={field.name} {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -87,9 +87,9 @@ export const DemoForm = ({ className }: DemoFormProps) => {
 					name="inputFour"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Input Four</FormLabel>
+							<FormLabel>{field.name}</FormLabel>
 							<FormControl>
-								<Input placeholder="input" {...field} />
+								<Input placeholder={field.name} {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -100,9 +100,9 @@ export const DemoForm = ({ className }: DemoFormProps) => {
 					name="inputFive"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Input Five</FormLabel>
+							<FormLabel>{field.name}</FormLabel>
 							<FormControl>
-								<Input placeholder="input" {...field} />
+								<Input placeholder={field.name} {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -113,9 +113,9 @@ export const DemoForm = ({ className }: DemoFormProps) => {
 					name="inputSix"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Input Six</FormLabel>
+							<FormLabel>{field.name}</FormLabel>
 							<FormControl>
-								<Input placeholder="input" {...field} />
+								<Input placeholder={field.name} {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -126,9 +126,9 @@ export const DemoForm = ({ className }: DemoFormProps) => {
 					name="inputSeven"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Input Seven</FormLabel>
+							<FormLabel>{field.name}</FormLabel>
 							<FormControl>
-								<Input placeholder="input" {...field} />
+								<Input placeholder={field.name} {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
