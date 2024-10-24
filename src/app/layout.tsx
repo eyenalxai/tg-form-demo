@@ -1,4 +1,5 @@
 import "./globals.css"
+import { Entrypoint } from "@/components/entrypoint"
 import { NavButtons } from "@/components/nav-buttons"
 import { Providers } from "@/components/providers"
 import { StickyApp } from "@/components/sticky-app"
@@ -38,15 +39,22 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={cn("font-sans", "antialiased", GeistSans.variable, GeistMono.variable, "mobile-body")}>
-				<Providers attribute="class" defaultTheme="system" enableSystem>
-					<StickyApp>
-						<div className={cn("container", "max-w-xs", "mx-auto", "mb-12")}>
-							<NavButtons />
-							<Separator className={cn("my-4")} />
-							{children}
-						</div>
-					</StickyApp>
+			<body
+				className={cn(
+					"font-sans",
+					"antialiased",
+					GeistSans.variable,
+					GeistMono.variable,
+					"overflow-hidden",
+					"h-[100vh]"
+				)}
+			>
+				<Providers attribute="class" defaultTheme="light">
+					<Entrypoint>
+						<NavButtons />
+						<Separator className={cn("my-4")} />
+						{children}
+					</Entrypoint>
 				</Providers>
 			</body>
 		</html>
