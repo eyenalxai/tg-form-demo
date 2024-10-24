@@ -6,12 +6,14 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AnimatePresence, MotionConfig, motion } from "framer-motion"
-import { useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { z } from "zod"
 type DemoFormProps = {
 	className?: string
 }
+import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
+import { jack } from "jackspeak"
 import { type Control, Controller } from "react-hook-form"
 
 const formSchema = z.object({
@@ -47,28 +49,38 @@ const Oof = ({ focusedField, order, name, control, handleFocus, handleBlur }: Oo
 			style={{
 				order: focusedField === field.name ? 0 : order,
 				position: focusedField === field.name ? "absolute" : "static",
-				top: focusedField === field.name ? window.scrollY + window.innerHeight / 10 : "auto",
+				top: focusedField === field.name ? "10%" : "auto",
 				width: focusedField === field.name ? "100%" : "auto",
 				zIndex: focusedField === field.name ? 20 : 10
 			}}
 		>
 			<motion.div
 				animate={{
-					scale: focusedField === field.name ? 1.2 : 1,
-					backgroundColor: focusedField === field.name ? "white" : "transparent"
+					scale: focusedField === field.name ? 1 : 1
 				}}
 			>
 				<FormItem
 					className={cn(
 						["transition-all", "duration-300", "ease-in-out"],
-						focusedField === field.name ? ["shadow-2xl", "p-4", "rounded-xl"] : []
+
+						focusedField === field.name ? ["shadow-2xl", "p-4", "pt-2", "rounded-md", "bg-background"] : []
 					)}
 				>
-					<FormLabel>{field.name}</FormLabel>
+					<FormLabel
+						className={cn(
+							["transition-all", "duration-300", "ease-in-out"],
+							focusedField !== null && focusedField !== field.name && "opacity-50"
+						)}
+					>
+						{field.name}
+					</FormLabel>
 					<FormControl>
 						<Input
 							disabled={focusedField !== null && focusedField !== field.name}
-							className={cn(focusedField !== null && focusedField !== field.name && "pointer-events-none")}
+							className={cn(
+								focusedField !== null && focusedField !== field.name && "pointer-events-none",
+								"bg-background"
+							)}
 							onFocus={() => {
 								handleFocus(field.name)
 							}}
@@ -124,7 +136,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 			>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className={cn("flex", "relative", "flex-col", "gap-y-6", className)}
+					className={cn("flex", "relative", "flex-col", "gap-y-6", "mb-24", className)}
 				>
 					<FormField
 						control={form.control}
