@@ -35,7 +35,7 @@ type OofProps = {
 	handleBlur: (onBlur: () => void) => void
 }
 
-const Oof = ({ focusedField, order, name, control, handleFocus, handleBlur }: OofProps) => {
+const InputField = ({ focusedField, order, name, control, handleFocus, handleBlur }: OofProps) => {
 	const {
 		field: { onBlur, ...field }
 	} = useController({
@@ -142,7 +142,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 						control={form.control}
 						name="inputOne"
 						render={({ field }) => (
-							<Oof
+							<InputField
 								focusedField={focusedField}
 								order={1}
 								name={field.name}
@@ -156,7 +156,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 						control={form.control}
 						name="inputTwo"
 						render={({ field }) => (
-							<Oof
+							<InputField
 								focusedField={focusedField}
 								order={2}
 								name={field.name}
@@ -170,7 +170,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 						control={form.control}
 						name="inputThree"
 						render={({ field }) => (
-							<Oof
+							<InputField
 								focusedField={focusedField}
 								order={3}
 								name={field.name}
@@ -184,7 +184,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 						control={form.control}
 						name="inputFour"
 						render={({ field }) => (
-							<Oof
+							<InputField
 								focusedField={focusedField}
 								order={4}
 								name={field.name}
@@ -198,7 +198,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 						control={form.control}
 						name="inputFive"
 						render={({ field }) => (
-							<Oof
+							<InputField
 								focusedField={focusedField}
 								order={5}
 								name={field.name}
@@ -212,7 +212,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 						control={form.control}
 						name="inputSix"
 						render={({ field }) => (
-							<Oof
+							<InputField
 								focusedField={focusedField}
 								order={6}
 								name={field.name}
@@ -226,7 +226,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 						control={form.control}
 						name="inputSeven"
 						render={({ field }) => (
-							<Oof
+							<InputField
 								focusedField={focusedField}
 								order={7}
 								name={field.name}
