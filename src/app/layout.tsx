@@ -1,4 +1,5 @@
 import "./globals.css"
+import { NavButtons } from "@/components/nav-buttons"
 import { Providers } from "@/components/providers"
 import { StickyApp } from "@/components/sticky-app"
 import { Button } from "@/components/ui/button"
@@ -41,20 +42,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 				<Providers attribute="class" defaultTheme="system" enableSystem>
 					<StickyApp>
 						<div className={cn("container", "max-w-xs", "mx-auto", "mb-12")}>
-							<div className={cn("grid", "grid-cols-2", "gap-2")}>
-								<Button variant={"outline"} asChild>
-									<Link href={"/default"}>Default</Link>
-								</Button>
-								<Button variant={"outline"} asChild>
-									<Link href={"/dialog"}>Dialog</Link>
-								</Button>
-								<Button variant={"outline"} asChild>
-									<Link href={"/hide"}>Hide</Link>
-								</Button>
-								<Button variant={"outline"} asChild>
-									<Link href={"/animate"}>Animate</Link>
-								</Button>
-							</div>
+							<NavButtons />
 							<Separator className={cn("my-4")} />
 							{children}
 						</div>
