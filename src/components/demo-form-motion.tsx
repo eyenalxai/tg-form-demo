@@ -47,6 +47,7 @@ const Oof = ({ focusedField, order, name, control, handleFocus, handleBlur }: Oo
 			style={{
 				order: focusedField === field.name ? 0 : order,
 				position: focusedField === field.name ? "absolute" : "static",
+				top: focusedField === field.name ? window.scrollY + window.innerHeight / 10 : "auto",
 				width: focusedField === field.name ? "100%" : "auto",
 				zIndex: focusedField === field.name ? 20 : 10
 			}}
@@ -60,13 +61,17 @@ const Oof = ({ focusedField, order, name, control, handleFocus, handleBlur }: Oo
 				<FormItem
 					className={cn(
 						["transition-all", "duration-300", "ease-in-out"],
-						focusedField === field.name ? ["shadow-2xl", "p-2", "rounded-md"] : []
+						focusedField === field.name ? ["shadow-2xl", "p-4", "rounded-xl"] : []
 					)}
 				>
 					<FormLabel>{field.name}</FormLabel>
 					<FormControl>
 						<Input
-							onFocus={() => handleFocus(field.name)}
+							disabled={focusedField !== null && focusedField !== field.name}
+							className={cn(focusedField !== null && focusedField !== field.name && "pointer-events-none")}
+							onFocus={() => {
+								handleFocus(field.name)
+							}}
 							onBlur={() => handleBlur(onBlur)}
 							placeholder={field.name}
 							{...field}
