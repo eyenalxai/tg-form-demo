@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
-import { type RefCallback, useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -68,12 +68,19 @@ const InputField = ({
 
 	useEffect(() => {
 		if (focusedField === field.name) {
-			const timeoutId = setTimeout(() => {
-				setIsReadOnly(false)
-				setFocus(field.name)
-			}, 500)
+			setIsReadOnly(false)
+			const dummyInput = document.getElementById("dummy-input")
+			if (dummyInput) {
+				dummyInput.focus()
+			}
 
-			return () => clearTimeout(timeoutId)
+			const timeoutId = setTimeout(() => {
+				setFocus(field.name)
+			}, 300)
+
+			return () => {
+				clearTimeout(timeoutId)
+			}
 		}
 	}, [focusedField, field.name, setFocus])
 
@@ -115,11 +122,15 @@ const InputField = ({
 								"bg-background"
 							)}
 							onFocus={() => {
-								handleFocus(field.name)
+								if (focusedField !== field.name) {
+									handleFocus(field.name)
+								}
 							}}
 							onBlur={() => {
-								setIsReadOnly(true)
-								handleBlur(onBlur)
+								if (!isReadOnly) {
+									setIsReadOnly(true)
+									handleBlur(onBlur)
+								}
 							}}
 							placeholder={field.name}
 							{...field}
