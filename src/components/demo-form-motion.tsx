@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import type { Control } from "react-hook-form"
+import { useInView } from "react-intersection-observer"
 
 const formSchema = z.object({
 	inputOne: z.string(),
@@ -31,9 +32,20 @@ type InputFieldProps = {
 	control: Control<z.infer<typeof formSchema>>
 	handleFocus: (field: keyof z.infer<typeof formSchema>) => void
 	handleBlur: (onBlur: () => void) => void
+	firstVisibleOrder: number
+	updateVisibility: (field: keyof z.infer<typeof formSchema>, isVisible: boolean) => void
 }
 
-const InputField = ({ focusedField, order, name, control, handleFocus, handleBlur }: InputFieldProps) => {
+const InputField = ({
+	focusedField,
+	order,
+	name,
+	control,
+	handleFocus,
+	handleBlur,
+	firstVisibleOrder,
+	updateVisibility
+}: InputFieldProps) => {
 	const {
 		field: { onBlur, ...field }
 	} = useController({
@@ -41,11 +53,21 @@ const InputField = ({ focusedField, order, name, control, handleFocus, handleBlu
 		control
 	})
 
+	const { ref, inView } = useInView({
+		threshold: 1
+	})
+
+	useEffect(() => {
+		if (focusedField !== null) return
+		updateVisibility(name, inView)
+	}, [inView, focusedField, name, updateVisibility])
+
 	return (
 		<motion.div
+			ref={ref}
 			layout
 			style={{
-				order: focusedField === field.name ? 0 : order,
+				order: focusedField === field.name ? firstVisibleOrder - 1 : order,
 				width: focusedField === field.name ? "100%" : "auto",
 				zIndex: focusedField === field.name ? 50 : 10
 			}}
@@ -96,7 +118,9 @@ type DemoFormProps = {
 }
 
 export const DemoFormMotion = ({ className }: DemoFormProps) => {
+	const [visibleFields, setVisibleFields] = useState<Set<keyof z.infer<typeof formSchema>>>(new Set())
 	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof formSchema> | null>(null)
+	const [firstVisibleOrder, setFirstVisibleOrder] = useState<number | null>(null)
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -113,19 +137,6 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 		}
 	})
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(values)
-	}
-
-	const handleFocus = (field: keyof z.infer<typeof formSchema>) => {
-		setFocusedField(field)
-	}
-
-	const handleBlur = (onBlur: () => void) => {
-		setFocusedField(null)
-		onBlur()
-	}
-
 	const fieldNameOrderMap = {
 		inputOne: 1,
 		inputTwo: 2,
@@ -139,6 +150,36 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 	} satisfies Record<keyof z.infer<typeof formSchema>, number>
 
 	const entries = Object.entries(fieldNameOrderMap) as [keyof z.infer<typeof formSchema>, number][]
+
+	function onSubmit(values: z.infer<typeof formSchema>) {
+		console.log(values)
+	}
+
+	const handleFocus = (field: keyof z.infer<typeof formSchema>) => {
+		setFocusedField(field)
+	}
+
+	const handleBlur = (onBlur: () => void) => {
+		setFocusedField(null)
+		onBlur()
+	}
+
+	const updateVisibility = useCallback((field: keyof z.infer<typeof formSchema>, isVisible: boolean) => {
+		setVisibleFields((prev) => {
+			const newSet = new Set(prev)
+			if (isVisible) {
+				newSet.add(field)
+			} else {
+				newSet.delete(field)
+			}
+			return newSet
+		})
+	}, [])
+
+	useEffect(() => {
+		const sortedFields = Array.from(visibleFields).sort((a, b) => fieldNameOrderMap[a] - fieldNameOrderMap[b])
+		setFirstVisibleOrder(fieldNameOrderMap[sortedFields[0]])
+	}, [fieldNameOrderMap, visibleFields])
 
 	return (
 		<Form {...form}>
@@ -167,6 +208,8 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 										control={form.control}
 										handleFocus={handleFocus}
 										handleBlur={handleBlur}
+										firstVisibleOrder={firstVisibleOrder || 0}
+										updateVisibility={updateVisibility}
 									/>
 								)}
 							/>
