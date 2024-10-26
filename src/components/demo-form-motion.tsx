@@ -111,7 +111,7 @@ const InputField = ({
 							focusedField !== null && focusedField !== field.name && "opacity-50"
 						)}
 					>
-						{field.name} {isReadOnly ? "(read-only)" : "(editable)"}
+						{field.name}
 					</FormLabel>
 					<FormControl>
 						<Input
@@ -121,11 +121,7 @@ const InputField = ({
 								focusedField !== null && focusedField !== field.name && "pointer-events-none",
 								"bg-background"
 							)}
-							onFocus={() => {
-								if (focusedField !== field.name) {
-									handleFocus(field.name)
-								}
-							}}
+							onFocus={() => handleFocus(field.name)}
 							onBlur={() => {
 								if (!isReadOnly) {
 									setIsReadOnly(true)
