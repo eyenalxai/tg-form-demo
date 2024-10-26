@@ -1,11 +1,28 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { useSwipeBehavior } from "@telegram-apps/sdk-react"
+import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
+import { type Platform, useLaunchParams, useSwipeBehavior } from "@telegram-apps/sdk-react"
 import { type ReactNode, useEffect, useState } from "react"
 
 export const StickyApp = ({ children }: { children: ReactNode }) => {
+	const launchParams = useLaunchParams(true)
+	const [isSticky, setIsSticky] = useState(false)
 	const swipeBehavior = useSwipeBehavior(true)
+	const isKeyboardVisible = useVirtualKeyboardVisibility()
+
+	useEffect(() => {
+		if (isSticky) document.body.classList.add("mobile-body")
+		if (isKeyboardVisible) document.body.classList.remove("mobile-body")
+	}, [isSticky, isKeyboardVisible])
+
+	useEffect(() => {
+		if (launchParams === undefined) return
+
+		const nonStickyPlatforms = ["macos", "tdesktop", "weba", "web", "webk"] as Platform[]
+
+		setIsSticky(!nonStickyPlatforms.includes(launchParams.platform) && !isKeyboardVisible)
+	}, [launchParams, isKeyboardVisible])
 
 	useEffect(() => {
 		if (swipeBehavior === undefined) return
@@ -13,5 +30,15 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 		swipeBehavior.disableVerticalSwipe()
 	}, [swipeBehavior])
 
-	return <div className={cn("container", "max-w-sm", "mx-auto")}>{children}</div>
+	return (
+		<main
+			className={cn(
+				isSticky && ["fixed", "left-0", "top-0", "right-0", "bottom-0", "overflow-x-hidden", "overflow-y-auto"]
+			)}
+		>
+			<div className={cn(isSticky && "h-[calc(100% + 1px)]")}>
+				<div className={cn("container", "max-w-sm", "mx-auto")}>{children}</div>
+			</div>
+		</main>
+	)
 }
