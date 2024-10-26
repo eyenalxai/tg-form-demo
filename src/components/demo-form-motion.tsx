@@ -64,12 +64,11 @@ const InputField = ({
 
 	return (
 		<motion.div
-			ref={ref}
 			layout
 			style={{
-				order: focusedField === field.name ? firstVisibleOrder - 1 : order,
+				order: focusedField === field.name ? firstVisibleOrder : order > firstVisibleOrder ? order + 1 : order,
 				width: focusedField === field.name ? "100%" : "auto",
-				zIndex: focusedField === field.name ? 50 : 10
+				zIndex: focusedField === field.name ? 20 : 10
 			}}
 		>
 			<motion.div
@@ -84,6 +83,7 @@ const InputField = ({
 					)}
 				>
 					<FormLabel
+						ref={ref}
 						className={cn(
 							["transition-all", "duration-300", "ease-in-out"],
 							focusedField !== null && focusedField !== field.name && "opacity-50"
