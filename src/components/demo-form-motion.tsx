@@ -92,7 +92,7 @@ const InputField = ({ focusedField, order, name, control, handleFocus, handleBlu
 			style={{
 				order: focusedField === field.name ? 0 : order,
 				position: focusedField === field.name ? "absolute" : "static",
-				top: focusedField === field.name ? "10%" : "auto",
+				top: focusedField === field.name ? `${(order - 1) * 10}%` : "auto",
 				width: focusedField === field.name ? "100%" : "auto",
 				zIndex: focusedField === field.name ? 20 : 10
 			}}
