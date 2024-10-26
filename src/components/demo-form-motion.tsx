@@ -36,76 +36,19 @@ type InputFieldProps = {
 
 const InputField = ({ focusedField, order, name, control, handleFocus, handleBlur }: InputFieldProps) => {
 	const {
-		field: { onBlur, ref: fieldRef, ...field }
+		field: { onBlur, ...field }
 	} = useController({
 		name,
 		control
 	})
-
-	const inputRef = useRef<HTMLInputElement | null>(null)
-
-	const { ref: inViewRef, inView } = useInView({
-		triggerOnce: false,
-		threshold: 0.1
-	})
-
-	const setRefs = (node: HTMLInputElement | null) => {
-		inputRef.current = node
-		inViewRef(node)
-		if (typeof fieldRef === "function") {
-			fieldRef(node)
-		}
-	}
-
-	useEffect(() => {
-		let timeoutId: NodeJS.Timeout
-
-		const scrollIntoView = () => {
-			if (focusedField === field.name && inputRef.current) {
-				const element = inputRef.current
-				const rect = element.getBoundingClientRect()
-				const offset = 100 // 50 pixels offset from top and bottom
-				const elementTop = rect.top + window.scrollY
-				const elementBottom = rect.bottom + window.scrollY
-				const viewportHeight = window.innerHeight
-
-				if (elementTop < window.scrollY + offset || elementBottom > window.scrollY + viewportHeight - offset) {
-					window.scrollTo({
-						top: elementTop - offset,
-						behavior: "smooth"
-					})
-				}
-			}
-		}
-
-		const debouncedScroll = () => {
-			clearTimeout(timeoutId)
-			timeoutId = setTimeout(scrollIntoView, 100)
-		}
-
-		if (focusedField === field.name && !inView) {
-			scrollIntoView()
-		}
-
-		if (focusedField === field.name) {
-			window.addEventListener("scroll", debouncedScroll)
-		}
-
-		return () => {
-			window.removeEventListener("scroll", debouncedScroll)
-			clearTimeout(timeoutId)
-		}
-	}, [focusedField, inView, field.name])
 
 	return (
 		<motion.div
 			layout
 			style={{
 				order: focusedField === field.name ? 0 : order,
-				position: focusedField === field.name ? "absolute" : "static",
-				top: focusedField === field.name ? `${(order - 1) * 10}%` : "auto",
 				width: focusedField === field.name ? "100%" : "auto",
-				zIndex: focusedField === field.name ? 20 : 10
+				zIndex: focusedField === field.name ? 50 : 10
 			}}
 		>
 			<motion.div
@@ -130,7 +73,6 @@ const InputField = ({ focusedField, order, name, control, handleFocus, handleBlu
 					</FormLabel>
 					<FormControl>
 						<Input
-							ref={setRefs}
 							disabled={focusedField !== null && focusedField !== field.name}
 							className={cn(
 								focusedField !== null && focusedField !== field.name && "pointer-events-none",
