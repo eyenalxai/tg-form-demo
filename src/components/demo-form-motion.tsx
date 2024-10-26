@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
-import { useCallback, useEffect, useState } from "react"
+import { type RefCallback, useCallback, useEffect, useRef, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -34,6 +34,7 @@ type InputFieldProps = {
 	handleBlur: (onBlur: () => void) => void
 	firstVisibleOrder: number
 	updateVisibility: (field: keyof z.infer<typeof formSchema>, isVisible: boolean) => void
+	setFocus: (field: keyof z.infer<typeof formSchema>) => void
 }
 
 const InputField = ({
@@ -44,8 +45,11 @@ const InputField = ({
 	handleFocus,
 	handleBlur,
 	firstVisibleOrder,
-	updateVisibility
+	updateVisibility,
+	setFocus
 }: InputFieldProps) => {
+	const [isReadOnly, setIsReadOnly] = useState(true)
+
 	const {
 		field: { onBlur, ...field }
 	} = useController({
@@ -62,11 +66,23 @@ const InputField = ({
 		updateVisibility(name, inView)
 	}, [inView, focusedField, name, updateVisibility])
 
+	useEffect(() => {
+		if (focusedField === field.name) {
+			const timeoutId = setTimeout(() => {
+				setIsReadOnly(false)
+				setFocus(field.name)
+			}, 500)
+
+			return () => clearTimeout(timeoutId)
+		}
+	}, [focusedField, field.name, setFocus])
+
 	return (
 		<motion.div
+			ref={ref}
 			layout
 			style={{
-				order: focusedField === field.name ? firstVisibleOrder : order > firstVisibleOrder ? order + 1 : order,
+				order: focusedField === field.name ? firstVisibleOrder - 1 : order,
 				width: focusedField === field.name ? "100%" : "auto",
 				zIndex: focusedField === field.name ? 20 : 10
 			}}
@@ -83,16 +99,16 @@ const InputField = ({
 					)}
 				>
 					<FormLabel
-						ref={ref}
 						className={cn(
 							["transition-all", "duration-300", "ease-in-out"],
 							focusedField !== null && focusedField !== field.name && "opacity-50"
 						)}
 					>
-						{field.name}
+						{field.name} {isReadOnly ? "(read-only)" : "(editable)"}
 					</FormLabel>
 					<FormControl>
 						<Input
+							readOnly={isReadOnly}
 							disabled={focusedField !== null && focusedField !== field.name}
 							className={cn(
 								focusedField !== null && focusedField !== field.name && "pointer-events-none",
@@ -101,7 +117,10 @@ const InputField = ({
 							onFocus={() => {
 								handleFocus(field.name)
 							}}
-							onBlur={() => handleBlur(onBlur)}
+							onBlur={() => {
+								setIsReadOnly(true)
+								handleBlur(onBlur)
+							}}
 							placeholder={field.name}
 							{...field}
 						/>
@@ -210,6 +229,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 										handleBlur={handleBlur}
 										firstVisibleOrder={firstVisibleOrder || 0}
 										updateVisibility={updateVisibility}
+										setFocus={form.setFocus}
 									/>
 								)}
 							/>
