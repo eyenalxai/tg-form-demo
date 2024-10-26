@@ -62,8 +62,19 @@ const InputField = ({ focusedField, order, name, control, handleFocus, handleBlu
 
 		const scrollIntoView = () => {
 			if (focusedField === field.name && inputRef.current) {
-				console.log(`Scrolling ${field.name} into view`)
-				inputRef.current.scrollIntoView({ behavior: "smooth", block: "center" })
+				const element = inputRef.current
+				const rect = element.getBoundingClientRect()
+				const offset = 100 // 50 pixels offset from top and bottom
+				const elementTop = rect.top + window.scrollY
+				const elementBottom = rect.bottom + window.scrollY
+				const viewportHeight = window.innerHeight
+
+				if (elementTop < window.scrollY + offset || elementBottom > window.scrollY + viewportHeight - offset) {
+					window.scrollTo({
+						top: elementTop - offset,
+						behavior: "smooth"
+					})
+				}
 			}
 		}
 
@@ -92,7 +103,7 @@ const InputField = ({ focusedField, order, name, control, handleFocus, handleBlu
 			style={{
 				order: focusedField === field.name ? 0 : order,
 				position: focusedField === field.name ? "absolute" : "static",
-				top: focusedField === field.name ? "20%" : "auto",
+				top: focusedField === field.name ? `${(order - 1) * 10}%` : "auto",
 				width: focusedField === field.name ? "100%" : "auto",
 				zIndex: focusedField === field.name ? 20 : 10
 			}}
