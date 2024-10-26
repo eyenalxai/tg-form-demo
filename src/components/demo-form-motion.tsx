@@ -6,12 +6,11 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import type { Control } from "react-hook-form"
-import { useInView } from "react-intersection-observer"
 
 const formSchema = z.object({
 	inputOne: z.string(),
@@ -59,7 +58,6 @@ const InputField = ({ focusedField, order, name, control, handleFocus, handleBlu
 				<FormItem
 					className={cn(
 						["transition-all", "duration-300", "ease-in-out"],
-
 						focusedField === field.name ? ["shadow-2xl", "p-4", "pt-2", "rounded-md", "bg-background"] : []
 					)}
 				>
@@ -109,7 +107,9 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 			inputFour: "",
 			inputFive: "",
 			inputSix: "",
-			inputSeven: ""
+			inputSeven: "",
+			inputEight: "",
+			inputNine: ""
 		}
 	})
 
@@ -126,6 +126,20 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 		onBlur()
 	}
 
+	const fieldNameOrderMap = {
+		inputOne: 1,
+		inputTwo: 2,
+		inputThree: 3,
+		inputFour: 4,
+		inputFive: 5,
+		inputSix: 6,
+		inputSeven: 7,
+		inputEight: 8,
+		inputNine: 9
+	} satisfies Record<keyof z.infer<typeof formSchema>, number>
+
+	const entries = Object.entries(fieldNameOrderMap) as [keyof z.infer<typeof formSchema>, number][]
+
 	return (
 		<Form {...form}>
 			<MotionConfig
@@ -139,132 +153,25 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 					onSubmit={form.handleSubmit(onSubmit)}
 					className={cn("flex", "relative", "flex-col", "gap-y-6", "mb-24", className)}
 				>
-					<FormField
-						control={form.control}
-						name="inputOne"
-						render={({ field }) => (
-							<InputField
-								focusedField={focusedField}
-								order={1}
-								name={field.name}
+					{entries.map(([key, value]) => {
+						return (
+							<FormField
+								key={key}
 								control={form.control}
-								handleFocus={handleFocus}
-								handleBlur={handleBlur}
+								name={key}
+								render={({ field }) => (
+									<InputField
+										focusedField={focusedField}
+										order={value}
+										name={field.name}
+										control={form.control}
+										handleFocus={handleFocus}
+										handleBlur={handleBlur}
+									/>
+								)}
 							/>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="inputTwo"
-						render={({ field }) => (
-							<InputField
-								focusedField={focusedField}
-								order={2}
-								name={field.name}
-								control={form.control}
-								handleFocus={handleFocus}
-								handleBlur={handleBlur}
-							/>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="inputThree"
-						render={({ field }) => (
-							<InputField
-								focusedField={focusedField}
-								order={3}
-								name={field.name}
-								control={form.control}
-								handleFocus={handleFocus}
-								handleBlur={handleBlur}
-							/>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="inputFour"
-						render={({ field }) => (
-							<InputField
-								focusedField={focusedField}
-								order={4}
-								name={field.name}
-								control={form.control}
-								handleFocus={handleFocus}
-								handleBlur={handleBlur}
-							/>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="inputFive"
-						render={({ field }) => (
-							<InputField
-								focusedField={focusedField}
-								order={5}
-								name={field.name}
-								control={form.control}
-								handleFocus={handleFocus}
-								handleBlur={handleBlur}
-							/>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="inputSix"
-						render={({ field }) => (
-							<InputField
-								focusedField={focusedField}
-								order={6}
-								name={field.name}
-								control={form.control}
-								handleFocus={handleFocus}
-								handleBlur={handleBlur}
-							/>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="inputSeven"
-						render={({ field }) => (
-							<InputField
-								focusedField={focusedField}
-								order={7}
-								name={field.name}
-								control={form.control}
-								handleFocus={handleFocus}
-								handleBlur={handleBlur}
-							/>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="inputEight"
-						render={({ field }) => (
-							<InputField
-								focusedField={focusedField}
-								order={8}
-								name={field.name}
-								control={form.control}
-								handleFocus={handleFocus}
-								handleBlur={handleBlur}
-							/>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="inputNine"
-						render={({ field }) => (
-							<InputField
-								focusedField={focusedField}
-								order={9}
-								name={field.name}
-								control={form.control}
-								handleFocus={handleFocus}
-								handleBlur={handleBlur}
-							/>
-						)}
-					/>
+						)
+					})}
 					<Button className={cn("order-[99]")} type="submit" asChild>
 						<motion.button layout>Submit</motion.button>
 					</Button>
