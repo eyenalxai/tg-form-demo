@@ -39,16 +39,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body
-				className={cn(
-					"font-sans",
-					"antialiased",
-					GeistSans.variable,
-					GeistMono.variable,
-					"overflow-hidden",
-					"h-[100vh]"
-				)}
-			>
+			<body className={cn("font-sans", "antialiased", GeistSans.variable, GeistMono.variable)}>
 				<Providers attribute="class" defaultTheme="light">
 					<Entrypoint>
 						<NavButtons />
