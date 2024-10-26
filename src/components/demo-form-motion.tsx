@@ -89,7 +89,7 @@ const InputField = ({
 			ref={ref}
 			layout
 			style={{
-				order: focusedField === field.name ? firstVisibleOrder - 1 : order,
+				order: focusedField === field.name ? firstVisibleOrder : order,
 				width: focusedField === field.name ? "100%" : "auto",
 				zIndex: focusedField === field.name ? 20 : 10
 			}}
@@ -101,14 +101,21 @@ const InputField = ({
 			>
 				<FormItem
 					className={cn(
-						["transition-all", "duration-300", "ease-in-out"],
-						focusedField === field.name ? ["shadow-2xl", "p-4", "pt-2", "rounded-md", "bg-background"] : []
+						["transition-all", "duration-500", "ease-in-out"],
+						focusedField === field.name && [
+							"shadow-2xl",
+							"backdrop-blur-xl",
+							"p-4",
+							"pt-2",
+							"rounded-md",
+							"bg-background"
+						]
 					)}
 				>
 					<FormLabel
 						className={cn(
-							["transition-all", "duration-300", "ease-in-out"],
-							focusedField !== null && focusedField !== field.name && "opacity-50"
+							["transition-all", "duration-500", "ease-in-out"],
+							focusedField !== null && focusedField !== field.name && ["opacity-50", "blur-[2px]"]
 						)}
 					>
 						{field.name}
@@ -118,7 +125,9 @@ const InputField = ({
 							readOnly={isReadOnly}
 							disabled={focusedField !== null && focusedField !== field.name}
 							className={cn(
-								focusedField !== null && focusedField !== field.name && "pointer-events-none",
+								"duration-500",
+								"ease-in-out",
+								focusedField !== null && focusedField !== field.name && ["pointer-events-none", "blur-[2px]"],
 								"bg-background"
 							)}
 							onFocus={() => handleFocus(field.name)}
@@ -212,7 +221,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 			<MotionConfig
 				transition={{
 					type: "spring",
-					duration: 0.5,
+					duration: 0.4,
 					bounce: 0.1
 				}}
 			>
@@ -254,7 +263,17 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 							/>
 						)
 					})}
-					<Button className={cn("order-[99]")} type="submit" asChild>
+					<Button
+						disabled={focusedField !== null}
+						className={cn(
+							"order-[99]",
+							["transition-all", "duration-500", "ease-in-out"],
+							"disabled:opacity-30",
+							focusedField !== null && ["blur-[3px]", "pointer-events-none"]
+						)}
+						type="submit"
+						asChild
+					>
 						<motion.button layout>Submit</motion.button>
 					</Button>
 				</form>
