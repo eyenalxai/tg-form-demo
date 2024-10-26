@@ -1,14 +1,12 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
 import { type Platform, useLaunchParams, useSwipeBehavior } from "@telegram-apps/sdk-react"
 import { type ReactNode, useEffect, useState } from "react"
 
 export const StickyApp = ({ children }: { children: ReactNode }) => {
 	const launchParams = useLaunchParams(true)
 	const [isSticky, setIsSticky] = useState(false)
-	const isKeyboardVisible = useVirtualKeyboardVisibility()
 	const swipeBehavior = useSwipeBehavior(true)
 
 	useEffect(() => {
@@ -20,8 +18,8 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 
 		const nonStickyPlatforms = ["macos", "tdesktop", "weba", "web", "webk"] as Platform[]
 
-		setIsSticky(!nonStickyPlatforms.includes(launchParams.platform) && !isKeyboardVisible)
-	}, [launchParams, isKeyboardVisible])
+		setIsSticky(!nonStickyPlatforms.includes(launchParams.platform))
+	}, [launchParams])
 
 	useEffect(() => {
 		if (swipeBehavior === undefined) return
