@@ -40,7 +40,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={cn("font-sans", "antialiased", GeistSans.variable, GeistMono.variable)}>
-				<textarea id={"dummy-input"} className={cn("size-px", "absolute", "bg-transparent", "pointer-events-none")} />
 				<Providers attribute="class" defaultTheme="light">
 					<Entrypoint>
 						<NavButtons />

@@ -216,6 +216,18 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 					bounce: 0.1
 				}}
 			>
+				<textarea
+					id={"dummy-input"}
+					className={cn(
+						"size-px",
+						"fixed",
+						"top-0",
+						"bg-transparent",
+						"pointer-events-none",
+						"focus:ring-0",
+						"focus:outline-none"
+					)}
+				/>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
 					className={cn("flex", "relative", "flex-col", "gap-y-6", "mb-24", className)}
