@@ -19,7 +19,9 @@ const formSchema = z.object({
 	inputFour: z.string(),
 	inputFive: z.string(),
 	inputSix: z.string(),
-	inputSeven: z.string()
+	inputSeven: z.string(),
+	inputEight: z.string(),
+	inputNine: z.string()
 })
 
 type InputFieldProps = {
@@ -229,6 +231,34 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 							<InputField
 								focusedField={focusedField}
 								order={7}
+								name={field.name}
+								control={form.control}
+								handleFocus={handleFocus}
+								handleBlur={handleBlur}
+							/>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="inputEight"
+						render={({ field }) => (
+							<InputField
+								focusedField={focusedField}
+								order={8}
+								name={field.name}
+								control={form.control}
+								handleFocus={handleFocus}
+								handleBlur={handleBlur}
+							/>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="inputNine"
+						render={({ field }) => (
+							<InputField
+								focusedField={focusedField}
+								order={9}
 								name={field.name}
 								control={form.control}
 								handleFocus={handleFocus}
