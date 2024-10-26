@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import type { Control } from "react-hook-form"
+import { useInView } from "react-intersection-observer"
 
 const formSchema = z.object({
 	inputOne: z.string(),
@@ -35,11 +36,55 @@ type InputFieldProps = {
 
 const InputField = ({ focusedField, order, name, control, handleFocus, handleBlur }: InputFieldProps) => {
 	const {
-		field: { onBlur, ...field }
+		field: { onBlur, ref: fieldRef, ...field }
 	} = useController({
 		name,
 		control
 	})
+
+	const inputRef = useRef<HTMLInputElement | null>(null)
+
+	const { ref: inViewRef, inView } = useInView({
+		triggerOnce: false,
+		threshold: 0.1
+	})
+
+	const setRefs = (node: HTMLInputElement | null) => {
+		inputRef.current = node
+		inViewRef(node)
+		if (typeof fieldRef === "function") {
+			fieldRef(node)
+		}
+	}
+
+	useEffect(() => {
+		let timeoutId: NodeJS.Timeout
+
+		const scrollIntoView = () => {
+			if (focusedField === field.name && inputRef.current) {
+				console.log(`Scrolling ${field.name} into view`)
+				inputRef.current.scrollIntoView({ behavior: "smooth", block: "center" })
+			}
+		}
+
+		const debouncedScroll = () => {
+			clearTimeout(timeoutId)
+			timeoutId = setTimeout(scrollIntoView, 100)
+		}
+
+		if (focusedField === field.name && !inView) {
+			scrollIntoView()
+		}
+
+		if (focusedField === field.name) {
+			window.addEventListener("scroll", debouncedScroll)
+		}
+
+		return () => {
+			window.removeEventListener("scroll", debouncedScroll)
+			clearTimeout(timeoutId)
+		}
+	}, [focusedField, inView, field.name])
 
 	return (
 		<motion.div
@@ -74,6 +119,7 @@ const InputField = ({ focusedField, order, name, control, handleFocus, handleBlu
 					</FormLabel>
 					<FormControl>
 						<Input
+							ref={setRefs}
 							disabled={focusedField !== null && focusedField !== field.name}
 							className={cn(
 								focusedField !== null && focusedField !== field.name && "pointer-events-none",
