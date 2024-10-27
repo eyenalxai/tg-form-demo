@@ -1,4 +1,4 @@
-import { DemoForm } from "@/components/demo-form"
+import { DefaultForm } from "@/components/default-form"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -14,7 +14,7 @@ export default function Page() {
 				</Button>
 				<DialogContent className={cn("top-52", "max-w-sm", "p-2", "rounded-md")}>
 					<ScrollArea className={cn("h-96", "rounded", "p-4")}>
-						<DemoForm className={cn("px-1")} />
+						<DefaultForm className={cn("px-1")} />
 					</ScrollArea>
 				</DialogContent>
 			</Dialog>
