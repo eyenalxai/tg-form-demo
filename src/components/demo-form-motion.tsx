@@ -8,29 +8,18 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { useController, useForm } from "react-hook-form"
-import { z } from "zod"
+import type { z } from "zod"
 
+import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
 import type { Control } from "react-hook-form"
 
-const formSchema = z.object({
-	inputOne: z.string(),
-	inputTwo: z.string(),
-	inputThree: z.string(),
-	inputFour: z.string(),
-	inputFive: z.string(),
-	inputSix: z.string(),
-	inputSeven: z.string(),
-	inputEight: z.string(),
-	inputNine: z.string()
-})
-
 type InputFieldProps = {
-	focusedField: keyof z.infer<typeof formSchema> | null
-	name: keyof z.infer<typeof formSchema>
-	control: Control<z.infer<typeof formSchema>>
-	handleFocus: (field: keyof z.infer<typeof formSchema>) => void
+	focusedField: keyof z.infer<typeof FormSchema> | null
+	name: keyof z.infer<typeof FormSchema>
+	control: Control<z.infer<typeof FormSchema>>
+	handleFocus: (field: keyof z.infer<typeof FormSchema>) => void
 	handleBlur: (onBlur: () => void) => void
-	setFocus: (field: keyof z.infer<typeof formSchema>) => void
+	setFocus: (field: keyof z.infer<typeof FormSchema>) => void
 }
 
 const InputField = ({ focusedField, name, control, handleFocus, handleBlur, setFocus }: InputFieldProps) => {
@@ -125,40 +114,18 @@ type DemoFormProps = {
 }
 
 export const DemoFormMotion = ({ className }: DemoFormProps) => {
-	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof formSchema> | null>(null)
+	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof FormSchema> | null>(null)
 
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
-		defaultValues: {
-			inputOne: "",
-			inputTwo: "",
-			inputThree: "",
-			inputFour: "",
-			inputFive: "",
-			inputSix: "",
-			inputSeven: "",
-			inputEight: "",
-			inputNine: ""
-		}
+	const form = useForm<z.infer<typeof FormSchema>>({
+		resolver: zodResolver(FormSchema),
+		defaultValues: formDefaultValues
 	})
 
-	const fields = [
-		"inputOne",
-		"inputTwo",
-		"inputThree",
-		"inputFour",
-		"inputFive",
-		"inputSix",
-		"inputSeven",
-		"inputEight",
-		"inputNine"
-	] satisfies (keyof z.infer<typeof formSchema>)[]
-
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	function onSubmit(values: z.infer<typeof FormSchema>) {
 		console.log(values)
 	}
 
-	const handleFocus = (field: keyof z.infer<typeof formSchema>) => {
+	const handleFocus = (field: keyof z.infer<typeof FormSchema>) => {
 		setFocusedField(field)
 	}
 
@@ -204,7 +171,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 							focusedField !== null && ["bg-black/10", "blur-[10px]"]
 						)}
 					/>
-					{fields.map((name) => {
+					{formFields.map((name) => {
 						return (
 							<FormField
 								key={name}
