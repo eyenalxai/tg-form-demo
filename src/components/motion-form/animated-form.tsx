@@ -60,7 +60,7 @@ export const AnimatedForm = ({ className }: AnimatedFormProps) => {
 				/>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className={cn("flex", "flex-col", "relative", "z-100", "gap-y-6", "mb-24", className)}
+					className={cn("flex", "flex-col", "relative", "z-100", "gap-y-6", className)}
 				>
 					<div
 						className={cn(
