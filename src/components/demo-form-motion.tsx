@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { MotionConfig, motion } from "framer-motion"
+import { AnimatePresence, MotionConfig, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { z } from "zod"
@@ -62,53 +62,61 @@ const InputField = ({ focusedField, name, control, handleFocus, handleBlur, setF
 	}, [focusedField, field.name, setFocus])
 
 	return (
-		<motion.div
-			layout={"position"}
-			style={{
-				position: focusedField === field.name ? "fixed" : "unset",
-				top: focusedField === field.name ? "20%" : "unset",
-				width: focusedField === field.name ? "calc(100% - 2rem)" : "auto",
-				left: focusedField === field.name ? "1rem" : "unset",
-				right: focusedField === field.name ? "1rem" : "unset",
-				zIndex: focusedField === field.name ? 30 : 20,
-				backgroundColor: focusedField === field.name ? "white" : "transparent",
-				padding: focusedField === field.name ? "0.5rem 1rem 1rem 1rem" : "0",
-				borderRadius: focusedField === field.name ? "var(--radius)" : "0"
-			}}
-		>
-			<FormItem className={cn(["transition-all", "duration-500", "ease-in-out"])}>
-				<FormLabel
-					className={cn(
-						["transition-all", "duration-500", "ease-in-out"],
-						focusedField !== null && focusedField !== field.name && ["opacity-50", "blur-[2px]"]
-					)}
-				>
-					{field.name}
-				</FormLabel>
-				<FormControl>
-					<Input
-						readOnly={isReadOnly}
-						disabled={focusedField !== null && focusedField !== field.name}
+		<div className={cn("w-full", "relative", "bg-background")}>
+			<motion.div
+				style={{
+					position: focusedField === field.name ? "unset" : "absolute",
+					height: "68px"
+				}}
+				layout
+			/>
+			<motion.div
+				layout={"position"}
+				style={{
+					position: focusedField === field.name ? "fixed" : "unset",
+					top: focusedField === field.name ? "20%" : "unset",
+					width: focusedField === field.name ? "calc(100% - 2rem)" : "auto",
+					left: focusedField === field.name ? "1rem" : "unset",
+					right: focusedField === field.name ? "1rem" : "unset",
+					zIndex: focusedField === field.name ? 30 : 20,
+					padding: focusedField === field.name ? "0.5rem 1rem 1rem 1rem" : "0",
+					background: "background",
+					borderRadius: focusedField === field.name ? "var(--radius)" : "0"
+				}}
+			>
+				<FormItem className={cn(["transition-all", "duration-500", "ease-in-out"])}>
+					<FormLabel
 						className={cn(
-							"duration-500",
-							"ease-in-out",
-							focusedField !== null && focusedField !== field.name && ["pointer-events-none", "blur-[2px]"],
-							"bg-background"
+							["transition-all", "duration-500", "ease-in-out"],
+							focusedField !== null && focusedField !== field.name && ["opacity-50", "blur-[2px]"]
 						)}
-						onFocus={() => handleFocus(field.name)}
-						onBlur={() => {
-							if (!isReadOnly) {
-								setIsReadOnly(true)
-								handleBlur(onBlur)
-							}
-						}}
-						placeholder={field.name}
-						{...field}
-					/>
-				</FormControl>
-				<FormMessage />
-			</FormItem>
-		</motion.div>
+					>
+						{field.name}
+					</FormLabel>
+					<FormControl>
+						<Input
+							readOnly={isReadOnly}
+							disabled={focusedField !== null && focusedField !== field.name}
+							className={cn(
+								"duration-500",
+								"ease-in-out",
+								focusedField !== null && focusedField !== field.name && ["pointer-events-none", "blur-[2px]"]
+							)}
+							onFocus={() => handleFocus(field.name)}
+							onBlur={() => {
+								if (!isReadOnly) {
+									setIsReadOnly(true)
+									handleBlur(onBlur)
+								}
+							}}
+							placeholder={field.name}
+							{...field}
+						/>
+					</FormControl>
+					<FormMessage />
+				</FormItem>
+			</motion.div>
+		</div>
 	)
 }
 
@@ -215,19 +223,26 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 							/>
 						)
 					})}
-					<Button
-						disabled={focusedField !== null}
-						className={cn(
-							"order-[99]",
-							["transition-all", "duration-500", "ease-in-out"],
-							"disabled:opacity-30",
-							focusedField !== null && ["blur-[3px]", "pointer-events-none"]
-						)}
-						type="submit"
-						asChild
+					<motion.div
+						style={{
+							order: 99,
+							width: "100%"
+						}}
+						layout
 					>
-						<motion.button layout>Submit</motion.button>
-					</Button>
+						<Button
+							disabled={focusedField !== null}
+							className={cn(
+								"w-full",
+								["transition-all", "duration-500", "ease-in-out"],
+								"disabled:opacity-30",
+								focusedField !== null && ["blur-[3px]", "pointer-events-none"]
+							)}
+							type="submit"
+						>
+							Submit
+						</Button>
+					</motion.div>
 				</form>
 			</MotionConfig>
 		</Form>
