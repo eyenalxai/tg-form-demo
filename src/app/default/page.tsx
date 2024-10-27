@@ -1,5 +1,5 @@
-import { DemoForm } from "@/components/demo-form"
+import { DefaultForm } from "@/components/default-form"
 
 export default function Page() {
-	return <DemoForm />
+	return <DefaultForm />
 }
