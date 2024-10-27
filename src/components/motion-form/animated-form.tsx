@@ -12,11 +12,7 @@ import type { z } from "zod"
 import { AnimatedInput } from "@/components/motion-form/animated-input"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
 
-type AnimatedFormProps = {
-	className?: string
-}
-
-export const AnimatedForm = ({ className }: AnimatedFormProps) => {
+export const AnimatedForm = () => {
 	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof FormSchema> | null>(null)
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -58,10 +54,7 @@ export const AnimatedForm = ({ className }: AnimatedFormProps) => {
 						"focus:outline-none"
 					)}
 				/>
-				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className={cn("flex", "flex-col", "relative", "z-100", "gap-y-6", className)}
-				>
+				<form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex", "flex-col", "relative", "z-100", "gap-y-6")}>
 					<div
 						className={cn(
 							"pointer-events-none",
@@ -70,7 +63,6 @@ export const AnimatedForm = ({ className }: AnimatedFormProps) => {
 							"inset-0",
 							"z-30",
 							["transition-all", "duration-500", "ease-in-out"],
-
 							focusedField !== null && ["bg-black/10", "blur-[10px]"]
 						)}
 					/>
