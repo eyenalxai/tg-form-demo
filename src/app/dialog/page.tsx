@@ -12,8 +12,8 @@ export default function Page() {
 				<Button asChild>
 					<DialogTrigger>Show Form</DialogTrigger>
 				</Button>
-				<DialogContent className={cn("top-52", "max-w-sm", "p-2", "rounded-md")}>
-					<ScrollArea className={cn("h-96", "rounded", "p-4")}>
+				<DialogContent className={cn("top-48", "max-w-sm", "p-2", "rounded-md")}>
+					<ScrollArea className={cn("h-80", "rounded", "p-4")}>
 						<DefaultForm className={cn("px-1")} />
 					</ScrollArea>
 				</DialogContent>
