@@ -1,15 +1,15 @@
 import { z } from "zod"
 
 export const FormSchema = z.object({
-	inputOne: z.string(),
-	inputTwo: z.string(),
-	inputThree: z.string(),
-	inputFour: z.string(),
-	inputFive: z.string(),
-	inputSix: z.string(),
-	inputSeven: z.string(),
-	inputEight: z.string(),
-	inputNine: z.string()
+	inputOne: z.string().optional(),
+	inputTwo: z.string().optional(),
+	inputThree: z.string().optional(),
+	inputFour: z.string().optional(),
+	inputFive: z.string().optional(),
+	inputSix: z.string().optional(),
+	inputSeven: z.string().optional(),
+	inputEight: z.string().optional(),
+	inputNine: z.string().optional()
 })
 
 export const formFields = Object.keys(FormSchema.shape).map((key) => key as keyof z.infer<typeof FormSchema>)
