@@ -64,7 +64,7 @@ export const AnimatedInput = ({
 				layout={"position"}
 				style={{
 					position: focusedField === field.name ? "fixed" : "unset",
-					top: focusedField === field.name ? "12rem" : "unset",
+					top: focusedField === field.name ? "6rem" : "unset",
 					width: focusedField === field.name ? "calc(100% - 2rem)" : "auto",
 					left: focusedField === field.name ? "1rem" : "unset",
 					right: focusedField === field.name ? "1rem" : "unset",
