@@ -74,7 +74,7 @@ const InputField = ({ focusedField, name, control, handleFocus, handleBlur, setF
 				layout={"position"}
 				style={{
 					position: focusedField === field.name ? "fixed" : "unset",
-					top: focusedField === field.name ? "20%" : "unset",
+					top: focusedField === field.name ? "12rem" : "unset",
 					width: focusedField === field.name ? "calc(100% - 2rem)" : "auto",
 					left: focusedField === field.name ? "1rem" : "unset",
 					right: focusedField === field.name ? "1rem" : "unset",
@@ -190,7 +190,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 				/>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className={cn("flex", "flex-col", "relative", "z-100", "gap-y-6", "mb-24", className)}
+					className={cn("flex", "flex-col", "px-2", "relative", "z-100", "gap-y-6", "mb-24", className)}
 				>
 					<div
 						className={cn(
