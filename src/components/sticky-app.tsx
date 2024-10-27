@@ -34,7 +34,7 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 			)}
 		>
 			<div className={cn(isSticky && "h-[calc(100% + 1px)]")}>
-				<div className={cn("container", "max-w-sm", "mx-auto", "px-2", "mb-24")}>{children}</div>
+				<div className={cn("container", "max-w-sm", "mx-auto", "px-2", "mt-2", "mb-24")}>{children}</div>
 			</div>
 		</main>
 	)
