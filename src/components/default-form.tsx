@@ -2,9 +2,11 @@
 
 import { AnimatedInput } from "@/components/motion-form/animated-input"
 import { Button } from "@/components/ui/button"
+import { DrawerClose, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
+import { useDrawer } from "@/lib/use-drawer"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -20,8 +22,10 @@ export const DefaultForm = ({ className }: DefaultFormProps) => {
 		defaultValues: formDefaultValues
 	})
 
-	function onSubmit(values: z.infer<typeof FormSchema>) {
-		console.log(values)
+	const { setIsOpen } = useDrawer()
+
+	function onSubmit(_values: z.infer<typeof FormSchema>) {
+		setIsOpen(true)
 	}
 
 	return (

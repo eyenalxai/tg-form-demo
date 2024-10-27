@@ -11,6 +11,7 @@ import type { z } from "zod"
 
 import { AnimatedInput } from "@/components/motion-form/animated-input"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
+import { useDrawer } from "@/lib/use-drawer"
 
 export const AnimatedForm = () => {
 	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof FormSchema> | null>(null)
@@ -20,8 +21,10 @@ export const AnimatedForm = () => {
 		defaultValues: formDefaultValues
 	})
 
-	function onSubmit(values: z.infer<typeof FormSchema>) {
-		console.log(values)
+	const { setIsOpen } = useDrawer()
+
+	function onSubmit(_values: z.infer<typeof FormSchema>) {
+		setIsOpen(true)
 	}
 
 	const handleFocus = (field: keyof z.infer<typeof FormSchema>) => {

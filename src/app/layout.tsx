@@ -1,9 +1,20 @@
 import "./globals.css"
 import { Entrypoint } from "@/components/entrypoint"
 import { NavButtons } from "@/components/nav-buttons"
+import { NotificationDrawer } from "@/components/notification-drawer"
 import { Providers } from "@/components/providers"
 import { StickyApp } from "@/components/sticky-app"
 import { Button } from "@/components/ui/button"
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger
+} from "@/components/ui/drawer"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { GeistMono } from "geist/font/mono"
@@ -45,6 +56,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 						<NavButtons />
 						<Separator className={cn("my-4")} />
 						{children}
+						<NotificationDrawer />
 					</Entrypoint>
 				</Providers>
 			</body>
