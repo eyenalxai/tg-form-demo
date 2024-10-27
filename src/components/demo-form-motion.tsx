@@ -6,12 +6,11 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useController, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import type { Control } from "react-hook-form"
-import { useInView } from "react-intersection-observer"
 
 const formSchema = z.object({
 	inputOne: z.string(),
@@ -27,27 +26,14 @@ const formSchema = z.object({
 
 type InputFieldProps = {
 	focusedField: keyof z.infer<typeof formSchema> | null
-	order: number
 	name: keyof z.infer<typeof formSchema>
 	control: Control<z.infer<typeof formSchema>>
 	handleFocus: (field: keyof z.infer<typeof formSchema>) => void
 	handleBlur: (onBlur: () => void) => void
-	firstVisibleOrder: number
-	updateVisibility: (field: keyof z.infer<typeof formSchema>, isVisible: boolean) => void
 	setFocus: (field: keyof z.infer<typeof formSchema>) => void
 }
 
-const InputField = ({
-	focusedField,
-	order,
-	name,
-	control,
-	handleFocus,
-	handleBlur,
-	firstVisibleOrder,
-	updateVisibility,
-	setFocus
-}: InputFieldProps) => {
+const InputField = ({ focusedField, name, control, handleFocus, handleBlur, setFocus }: InputFieldProps) => {
 	const [isReadOnly, setIsReadOnly] = useState(true)
 
 	const {
@@ -56,15 +42,6 @@ const InputField = ({
 		name,
 		control
 	})
-
-	const { ref, inView } = useInView({
-		threshold: 1
-	})
-
-	useEffect(() => {
-		if (focusedField !== null) return
-		updateVisibility(name, inView)
-	}, [inView, focusedField, name, updateVisibility])
 
 	useEffect(() => {
 		if (focusedField === field.name) {
@@ -86,7 +63,6 @@ const InputField = ({
 
 	return (
 		<motion.div
-			ref={ref}
 			layout={"position"}
 			style={{
 				position: focusedField === field.name ? "fixed" : "unset",
@@ -141,9 +117,7 @@ type DemoFormProps = {
 }
 
 export const DemoFormMotion = ({ className }: DemoFormProps) => {
-	const [visibleFields, setVisibleFields] = useState<Set<keyof z.infer<typeof formSchema>>>(new Set())
 	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof formSchema> | null>(null)
-	const [firstVisibleOrder, setFirstVisibleOrder] = useState<number | null>(null)
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -160,19 +134,17 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 		}
 	})
 
-	const fieldNameOrderMap = {
-		inputOne: 1,
-		inputTwo: 2,
-		inputThree: 3,
-		inputFour: 4,
-		inputFive: 5,
-		inputSix: 6,
-		inputSeven: 7,
-		inputEight: 8,
-		inputNine: 9
-	} satisfies Record<keyof z.infer<typeof formSchema>, number>
-
-	const entries = Object.entries(fieldNameOrderMap) as [keyof z.infer<typeof formSchema>, number][]
+	const fields = [
+		"inputOne",
+		"inputTwo",
+		"inputThree",
+		"inputFour",
+		"inputFive",
+		"inputSix",
+		"inputSeven",
+		"inputEight",
+		"inputNine"
+	] satisfies (keyof z.infer<typeof formSchema>)[]
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		console.log(values)
@@ -186,23 +158,6 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 		setFocusedField(null)
 		onBlur()
 	}
-
-	const updateVisibility = useCallback((field: keyof z.infer<typeof formSchema>, isVisible: boolean) => {
-		setVisibleFields((prev) => {
-			const newSet = new Set(prev)
-			if (isVisible) {
-				newSet.add(field)
-			} else {
-				newSet.delete(field)
-			}
-			return newSet
-		})
-	}, [])
-
-	useEffect(() => {
-		const sortedFields = Array.from(visibleFields).sort((a, b) => fieldNameOrderMap[a] - fieldNameOrderMap[b])
-		setFirstVisibleOrder(fieldNameOrderMap[sortedFields[0]])
-	}, [fieldNameOrderMap, visibleFields])
 
 	return (
 		<Form {...form}>
@@ -241,22 +196,19 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 							focusedField !== null && ["bg-black/10", "blur-[10px]"]
 						)}
 					/>
-					{entries.map(([key, value]) => {
+					{fields.map((name) => {
 						return (
 							<FormField
-								key={key}
+								key={name}
 								control={form.control}
-								name={key}
+								name={name}
 								render={({ field }) => (
 									<InputField
 										focusedField={focusedField}
-										order={value}
 										name={field.name}
 										control={form.control}
 										handleFocus={handleFocus}
 										handleBlur={handleBlur}
-										firstVisibleOrder={firstVisibleOrder || 0}
-										updateVisibility={updateVisibility}
 										setFocus={form.setFocus}
 									/>
 								)}
