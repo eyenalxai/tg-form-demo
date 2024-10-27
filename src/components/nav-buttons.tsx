@@ -16,8 +16,8 @@ export const NavButtons = () => {
 			<Button variant={pathname === "/dialog" ? "default" : "outline"} asChild>
 				<Link href={"/dialog"}>Dialog</Link>
 			</Button>
-			<Button variant={pathname === "/animate" ? "default" : "outline"} className={"col-span-2"} asChild>
-				<Link href={"/animate"}>Animate</Link>
+			<Button variant={pathname === "/animated" ? "default" : "outline"} className={"col-span-2"} asChild>
+				<Link href={"/animated"}>Animated</Link>
 			</Button>
 		</div>
 	)
