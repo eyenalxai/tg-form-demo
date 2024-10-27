@@ -190,7 +190,7 @@ export const DemoFormMotion = ({ className }: DemoFormProps) => {
 				/>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className={cn("flex", "flex-col", "px-2", "relative", "z-100", "gap-y-6", "mb-24", className)}
+					className={cn("flex", "flex-col", "relative", "z-100", "gap-y-6", "mb-24", className)}
 				>
 					<div
 						className={cn(
