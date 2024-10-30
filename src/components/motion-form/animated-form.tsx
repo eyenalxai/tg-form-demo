@@ -61,7 +61,6 @@ export const AnimatedForm = () => {
 					)}
 				/>
 				<form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex", "flex-col", "z-100", "gap-y-6")}>
-					<div className={cn("pointer-events-none", "fixed", "inset-0", "z-30")} />
 					{formFields.map((name) => {
 						return (
 							<AnimatedContainer
