@@ -62,7 +62,10 @@ export const AnimatedForm = () => {
 						"focus:outline-none"
 					)}
 				/>
-				<form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex", "flex-col", "z-100", "gap-y-6")}>
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className={cn("flex", "w-full", focusedField !== null && ["fixed", "pr-12"], "flex-col", "z-100", "gap-y-6")}
+				>
 					{formFields.map((name) => {
 						return (
 							<AnimatedContainer
