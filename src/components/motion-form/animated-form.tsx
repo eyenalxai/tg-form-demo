@@ -46,7 +46,7 @@ export const AnimatedForm = () => {
 			<MotionConfig
 				transition={{
 					type: "spring",
-					duration: 0.4,
+					duration: 1,
 					bounce: 0.1
 				}}
 			>
