@@ -44,11 +44,6 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 				zIndex: zIndex,
 				borderRadius: isMoved ? "var(--radius)" : 0
 			}}
-			transition={{
-				type: "spring",
-				duration: 0.4,
-				bounce: 0.1
-			}}
 		>
 			<div
 				className={cn(
