@@ -31,6 +31,7 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<main
+			id={"main-wrapper"}
 			className={cn(
 				isSticky && [
 					"fixed",
