@@ -14,9 +14,11 @@ import { AnimatedInput } from "@/components/motion-form/animated-input"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
 import { useIsMobile } from "@/lib/is-mobile"
 import { useDrawer } from "@/lib/use-drawer"
+import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
 
 export const AnimatedForm = () => {
 	const isMobile = useIsMobile()
+	const isKeyboardVisible = useVirtualKeyboardVisibility()
 	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof FormSchema> | null>(null)
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -46,7 +48,7 @@ export const AnimatedForm = () => {
 			<MotionConfig
 				transition={{
 					type: "spring",
-					duration: 1,
+					duration: 0.4,
 					bounce: 0.1
 				}}
 			>
@@ -62,10 +64,7 @@ export const AnimatedForm = () => {
 						"focus:outline-none"
 					)}
 				/>
-				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className={cn("flex", "w-full", focusedField !== null && ["fixed", "pr-12"], "flex-col", "z-100", "gap-y-6")}
-				>
+				<form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex", "w-full", "flex-col", "z-100", "gap-y-6")}>
 					{formFields.map((name) => {
 						return (
 							<AnimatedContainer
