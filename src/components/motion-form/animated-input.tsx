@@ -48,7 +48,7 @@ export const AnimatedInput = ({
 
 			const timeoutId = setTimeout(() => {
 				setFocus(name)
-			}, 800)
+			}, 300)
 
 			return () => {
 				clearTimeout(timeoutId)
