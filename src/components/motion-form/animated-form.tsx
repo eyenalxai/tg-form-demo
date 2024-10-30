@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Form, FormField } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
@@ -72,14 +72,19 @@ export const AnimatedForm = () => {
 									control={form.control}
 									name={name}
 									render={({ field }) => (
-										<AnimatedInput
-											focusedField={focusedField}
-											name={field.name}
-											control={form.control}
-											handleFocus={handleFocus}
-											handleBlur={handleBlur}
-											setFocus={form.setFocus}
-										/>
+										<FormItem>
+											<FormLabel>{field.name}</FormLabel>
+											<FormControl>
+												<AnimatedInput
+													focusedField={focusedField}
+													name={field.name}
+													control={form.control}
+													handleFocus={handleFocus}
+													handleBlur={handleBlur}
+													setFocus={form.setFocus}
+												/>
+											</FormControl>
+										</FormItem>
 									)}
 								/>
 							</AnimatedContainer>

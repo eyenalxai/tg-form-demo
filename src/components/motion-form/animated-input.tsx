@@ -1,4 +1,3 @@
-import { FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import type { FormSchema } from "@/lib/form"
 
@@ -33,7 +32,7 @@ export const AnimatedInput = ({
 	})
 
 	useEffect(() => {
-		if (focusedField === field.name) {
+		if (focusedField === name) {
 			setIsReadOnly(false)
 			const dummyInput = document.getElementById("dummy-input")
 			if (dummyInput) {
@@ -41,34 +40,28 @@ export const AnimatedInput = ({
 			}
 
 			const timeoutId = setTimeout(() => {
-				setFocus(field.name)
+				setFocus(name)
 			}, 300)
 
 			return () => {
 				clearTimeout(timeoutId)
 			}
 		}
-	}, [focusedField, field.name, setFocus])
+	}, [focusedField, name, setFocus])
 
 	return (
-		<FormItem>
-			<FormLabel>{field.name}</FormLabel>
-			<FormControl>
-				<Input
-					readOnly={isReadOnly}
-					disabled={focusedField !== null && focusedField !== field.name}
-					onFocus={() => handleFocus(field.name)}
-					onBlur={() => {
-						if (!isReadOnly) {
-							setIsReadOnly(true)
-							handleBlur(onBlur)
-						}
-					}}
-					placeholder={field.name}
-					{...field}
-				/>
-			</FormControl>
-			<FormMessage />
-		</FormItem>
+		<Input
+			readOnly={isReadOnly}
+			disabled={focusedField !== null && focusedField !== name}
+			onFocus={() => handleFocus(field.name)}
+			onBlur={() => {
+				if (!isReadOnly) {
+					setIsReadOnly(true)
+					handleBlur(onBlur)
+				}
+			}}
+			placeholder={field.name}
+			{...field}
+		/>
 	)
 }
