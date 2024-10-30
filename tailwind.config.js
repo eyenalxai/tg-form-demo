@@ -12,6 +12,9 @@ module.exports = {
 				sans: ["var(--font-geist-sans)"],
 				mono: ["var(--font-geist-mono)"]
 			},
+			boxShadow: {
+				elevated: "0px 0px 50px 10px rgba(0,0,0,0.15)"
+			},
 			borderRadius: {
 				lg: "var(--radius)",
 				md: "calc(var(--radius) - 2px)",
