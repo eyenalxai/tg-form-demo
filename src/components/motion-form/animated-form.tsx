@@ -12,9 +12,11 @@ import type { z } from "zod"
 import { AnimatedContainer } from "@/components/motion-form/animated-container"
 import { AnimatedInput } from "@/components/motion-form/animated-input"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
+import { useIsMobile } from "@/lib/is-mobile"
 import { useDrawer } from "@/lib/use-drawer"
 
 export const AnimatedForm = () => {
+	const isMobile = useIsMobile()
 	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof FormSchema> | null>(null)
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -95,12 +97,14 @@ export const AnimatedForm = () => {
 					})}
 					<motion.div layout={"position"}>
 						<Button
-							disabled={focusedField !== null}
+							disabled={isMobile && focusedField !== null}
 							className={cn(
 								"w-full",
-								["transition-all", "duration-500", "ease-in-out"],
-								"disabled:opacity-30",
-								focusedField !== null && ["blur-[3px]", "pointer-events-none"]
+								isMobile && [
+									["transition-all", "duration-500", "ease-in-out"],
+									"disabled:opacity-30",
+									focusedField !== null && ["blur-[3px]", "pointer-events-none"]
+								]
 							)}
 							type="submit"
 						>
