@@ -67,9 +67,10 @@ export const AnimatedForm = () => {
 						return (
 							<AnimatedContainer
 								key={name}
+								name={name}
 								isMoved={focusedField === name}
 								anotherMoved={focusedField !== null && focusedField !== name}
-								className={cn("bg-background")}
+								className={cn("bg-background", "max-w-sm", "container", "mx-auto")}
 							>
 								<FormField
 									control={form.control}

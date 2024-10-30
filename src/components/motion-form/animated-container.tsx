@@ -6,11 +6,12 @@ import { type ReactNode, useEffect, useState } from "react"
 type AnimatedContainerProps = {
 	children: ReactNode
 	isMoved: boolean
+	name: string
 	anotherMoved?: boolean
 	className?: string
 }
 
-export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }: AnimatedContainerProps) => {
+export const AnimatedContainer = ({ children, name, isMoved, anotherMoved, className }: AnimatedContainerProps) => {
 	const [zIndex, setZIndex] = useState(0)
 	const isMobile = useIsMobile()
 
@@ -34,6 +35,7 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 	return (
 		<motion.div
 			layout={"position"}
+			layoutId={`animated-container-${name}`}
 			className={cn(className)}
 			style={{
 				position: isMoved ? "fixed" : "static",
