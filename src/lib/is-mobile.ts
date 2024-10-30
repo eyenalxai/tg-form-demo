@@ -16,5 +16,5 @@ export const useIsMobile = () => {
 		setIsMobile(!nonMobilePlatforms.includes(launchParams.platform))
 	}, [launchParams])
 
-	return isMobile
+	return true
 }
