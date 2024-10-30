@@ -1,8 +1,7 @@
 import { FormControl, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import type { FormSchema } from "@/lib/form"
-import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
+
 import { useEffect, useState } from "react"
 import { type Control, useController } from "react-hook-form"
 import type { z } from "zod"
@@ -52,51 +51,24 @@ export const AnimatedInput = ({
 	}, [focusedField, field.name, setFocus])
 
 	return (
-		<motion.div
-			layout={"position"}
-			style={{
-				position: focusedField === field.name ? "fixed" : "unset",
-				top: focusedField === field.name ? "6rem" : "unset",
-				width: focusedField === field.name ? "calc(100% - 2rem)" : "auto",
-				left: focusedField === field.name ? "1rem" : "unset",
-				right: focusedField === field.name ? "1rem" : "unset",
-				zIndex: focusedField === field.name ? 30 : 20,
-				padding: focusedField === field.name ? "0.5rem 1rem 1rem 1rem" : "0",
-				background: "background",
-				borderRadius: focusedField === field.name ? "var(--radius)" : "0"
-			}}
-		>
-			<FormItem className={cn(["transition-all", "duration-500", "ease-in-out"])}>
-				<FormLabel
-					className={cn(
-						["transition-all", "duration-500", "ease-in-out"],
-						focusedField !== null && focusedField !== field.name && ["opacity-50", "blur-[2px]"]
-					)}
-				>
-					{field.name}
-				</FormLabel>
-				<FormControl>
-					<Input
-						readOnly={isReadOnly}
-						disabled={focusedField !== null && focusedField !== field.name}
-						className={cn(
-							"duration-500",
-							"ease-in-out",
-							focusedField !== null && focusedField !== field.name && ["pointer-events-none", "blur-[2px]"]
-						)}
-						onFocus={() => handleFocus(field.name)}
-						onBlur={() => {
-							if (!isReadOnly) {
-								setIsReadOnly(true)
-								handleBlur(onBlur)
-							}
-						}}
-						placeholder={field.name}
-						{...field}
-					/>
-				</FormControl>
-				<FormMessage />
-			</FormItem>
-		</motion.div>
+		<FormItem>
+			<FormLabel>{field.name}</FormLabel>
+			<FormControl>
+				<Input
+					readOnly={isReadOnly}
+					disabled={focusedField !== null && focusedField !== field.name}
+					onFocus={() => handleFocus(field.name)}
+					onBlur={() => {
+						if (!isReadOnly) {
+							setIsReadOnly(true)
+							handleBlur(onBlur)
+						}
+					}}
+					placeholder={field.name}
+					{...field}
+				/>
+			</FormControl>
+			<FormMessage />
+		</FormItem>
 	)
 }

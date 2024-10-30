@@ -9,6 +9,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import type { z } from "zod"
 
+import { AnimatedContainer } from "@/components/motion-form/animated-container"
 import { AnimatedInput } from "@/components/motion-form/animated-input"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
 import { useDrawer } from "@/lib/use-drawer"
@@ -57,44 +58,34 @@ export const AnimatedForm = () => {
 						"focus:outline-none"
 					)}
 				/>
-				<form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex", "flex-col", "relative", "z-100", "gap-y-6")}>
-					<div
-						className={cn(
-							"pointer-events-none",
-							"absolute",
-							"-m-4",
-							"inset-0",
-							"z-30",
-							["transition-all", "duration-500", "ease-in-out"],
-							focusedField !== null && ["bg-black/10", "blur-[10px]"]
-						)}
-					/>
+				<form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex", "flex-col", "z-100", "gap-y-6")}>
+					<div className={cn("pointer-events-none", "fixed", "inset-0", "z-30")} />
 					{formFields.map((name) => {
 						return (
-							<FormField
+							<AnimatedContainer
 								key={name}
-								control={form.control}
-								name={name}
-								render={({ field }) => (
-									<AnimatedInput
-										focusedField={focusedField}
-										name={field.name}
-										control={form.control}
-										handleFocus={handleFocus}
-										handleBlur={handleBlur}
-										setFocus={form.setFocus}
-									/>
-								)}
-							/>
+								isMoved={focusedField === name}
+								anotherMoved={focusedField !== null && focusedField !== name}
+								className={cn("bg-background")}
+							>
+								<FormField
+									control={form.control}
+									name={name}
+									render={({ field }) => (
+										<AnimatedInput
+											focusedField={focusedField}
+											name={field.name}
+											control={form.control}
+											handleFocus={handleFocus}
+											handleBlur={handleBlur}
+											setFocus={form.setFocus}
+										/>
+									)}
+								/>
+							</AnimatedContainer>
 						)
 					})}
-					<motion.div
-						style={{
-							order: 99,
-							width: "100%"
-						}}
-						layout
-					>
+					<motion.div layout={"position"}>
 						<Button
 							disabled={focusedField !== null}
 							className={cn(
