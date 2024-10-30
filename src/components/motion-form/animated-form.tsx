@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import type { z } from "zod"
 
@@ -37,6 +37,8 @@ export const AnimatedForm = () => {
 		onBlur()
 	}
 
+	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
+
 	return (
 		<Form {...form}>
 			<MotionConfig
@@ -47,7 +49,7 @@ export const AnimatedForm = () => {
 				}}
 			>
 				<textarea
-					id={"dummy-input"}
+					ref={dummyInputRef}
 					className={cn(
 						"size-px",
 						"fixed",
@@ -82,6 +84,7 @@ export const AnimatedForm = () => {
 													handleFocus={handleFocus}
 													handleBlur={handleBlur}
 													setFocus={form.setFocus}
+													dummyInputRef={dummyInputRef}
 												/>
 											</FormControl>
 										</FormItem>

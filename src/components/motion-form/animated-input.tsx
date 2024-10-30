@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input"
 import type { FormSchema } from "@/lib/form"
 
 import { useIsMobile } from "@/lib/is-mobile"
-import { useEffect, useState } from "react"
+import { type RefObject, useEffect, useState } from "react"
 import { type Control, useController } from "react-hook-form"
 import type { z } from "zod"
 
@@ -13,6 +13,7 @@ type AnimatedInputProps = {
 	handleFocus: (field: keyof z.infer<typeof FormSchema>) => void
 	handleBlur: (onBlur: () => void) => void
 	setFocus: (field: keyof z.infer<typeof FormSchema>) => void
+	dummyInputRef: RefObject<HTMLTextAreaElement> | null
 }
 
 export const AnimatedInput = ({
@@ -21,7 +22,8 @@ export const AnimatedInput = ({
 	control,
 	handleFocus,
 	handleBlur,
-	setFocus
+	setFocus,
+	dummyInputRef
 }: AnimatedInputProps) => {
 	const isMobile = useIsMobile()
 	const [isReadOnly, setIsReadOnly] = useState(true)
@@ -42,10 +44,7 @@ export const AnimatedInput = ({
 				return
 			}
 
-			const dummyInput = document.getElementById("dummy-input")
-			if (dummyInput) {
-				dummyInput.focus()
-			}
+			if (dummyInputRef) dummyInputRef.current.focus()
 
 			const timeoutId = setTimeout(() => {
 				setFocus(name)
@@ -55,7 +54,7 @@ export const AnimatedInput = ({
 				clearTimeout(timeoutId)
 			}
 		}
-	}, [isMobile, focusedField, name, setFocus])
+	}, [isMobile, focusedField, name, setFocus, dummyInputRef])
 
 	return (
 		<Input
