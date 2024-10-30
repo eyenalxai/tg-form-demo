@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input"
 import type { FormSchema } from "@/lib/form"
 
+import { useIsMobile } from "@/lib/is-mobile"
 import { useEffect, useState } from "react"
 import { type Control, useController } from "react-hook-form"
 import type { z } from "zod"
@@ -22,6 +23,7 @@ export const AnimatedInput = ({
 	handleBlur,
 	setFocus
 }: AnimatedInputProps) => {
+	const isMobile = useIsMobile()
 	const [isReadOnly, setIsReadOnly] = useState(true)
 
 	const {
@@ -34,6 +36,12 @@ export const AnimatedInput = ({
 	useEffect(() => {
 		if (focusedField === name) {
 			setIsReadOnly(false)
+
+			if (!isMobile) {
+				setFocus(name)
+				return
+			}
+
 			const dummyInput = document.getElementById("dummy-input")
 			if (dummyInput) {
 				dummyInput.focus()
@@ -47,12 +55,12 @@ export const AnimatedInput = ({
 				clearTimeout(timeoutId)
 			}
 		}
-	}, [focusedField, name, setFocus])
+	}, [isMobile, focusedField, name, setFocus])
 
 	return (
 		<Input
-			readOnly={isReadOnly}
-			disabled={focusedField !== null && focusedField !== name}
+			readOnly={isMobile && isReadOnly}
+			disabled={isMobile && focusedField !== null && focusedField !== name}
 			onFocus={() => handleFocus(field.name)}
 			onBlur={() => {
 				if (!isReadOnly) {
