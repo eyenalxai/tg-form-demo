@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
 import { type Platform, useLaunchParams, useSwipeBehavior } from "@telegram-apps/sdk-react"
 import { type ReactNode, useEffect, useState } from "react"
 
@@ -8,6 +9,7 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 	const launchParams = useLaunchParams(true)
 	const [isSticky, setIsSticky] = useState(false)
 	const swipeBehavior = useSwipeBehavior(true)
+	const isKeyboardVisible = useVirtualKeyboardVisibility()
 
 	useEffect(() => {
 		if (isSticky) document.body.classList.add("mobile-body")
@@ -30,7 +32,15 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 	return (
 		<main
 			className={cn(
-				isSticky && ["fixed", "left-0", "top-0", "right-0", "bottom-0", "overflow-x-hidden", "overflow-y-auto"]
+				isSticky && [
+					"fixed",
+					"left-0",
+					"top-0",
+					"right-0",
+					"bottom-0",
+					"overflow-x-hidden",
+					isKeyboardVisible ? "overflow-y-hidden" : "overflow-y-auto"
+				]
 			)}
 		>
 			<div className={cn(isSticky && "h-[calc(100% + 1px)]")}>
