@@ -25,7 +25,7 @@ export const AnimatedContainer = ({ children, name, isMoved, anotherMoved, class
 
 		const timeoutId = setTimeout(() => {
 			setZIndex(0)
-		}, 300)
+		}, 900)
 
 		return () => clearTimeout(timeoutId)
 	}, [isMoved, isMobile])
