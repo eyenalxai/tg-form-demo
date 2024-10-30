@@ -1,7 +1,7 @@
 import { useIsMobile } from "@/lib/is-mobile"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
-import { type ReactNode, useEffect, useState } from "react"
+import { type ReactNode, useEffect, useRef, useState } from "react"
 
 type AnimatedContainerProps = {
 	children: ReactNode
@@ -12,7 +12,10 @@ type AnimatedContainerProps = {
 
 export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }: AnimatedContainerProps) => {
 	const [zIndex, setZIndex] = useState(0)
+	const [targetY, setTargetY] = useState(0)
 	const isMobile = useIsMobile()
+
+	const elementRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
 		if (!isMobile) return
@@ -29,18 +32,40 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 		return () => clearTimeout(timeoutId)
 	}, [isMoved, isMobile])
 
+	useEffect(() => {
+		const calculatePosition = () => {
+			if (elementRef.current) {
+				const elementRect = elementRef.current.getBoundingClientRect()
+				const viewportOffset = 128
+				const currentOffset = elementRect.top
+				setTargetY(viewportOffset - currentOffset)
+			}
+		}
+
+		calculatePosition()
+
+		const mainWrapper = document.getElementById("main-wrapper")
+
+		if (mainWrapper) {
+			mainWrapper.addEventListener("scroll", calculatePosition)
+		}
+
+		return () => {
+			if (mainWrapper) {
+				mainWrapper.removeEventListener("scroll", calculatePosition)
+			}
+		}
+	}, [])
+
 	if (!isMobile) return children
 
 	return (
 		<motion.div
+			ref={elementRef}
 			layout={"position"}
 			className={cn(className)}
+			animate={{ y: isMoved ? targetY : 0 }}
 			style={{
-				position: isMoved ? "fixed" : "static",
-				top: isMoved ? "6rem" : "auto",
-				width: isMoved ? "calc(100% - 2rem)" : "100%",
-				left: isMoved ? "1rem" : "auto",
-				right: isMoved ? "1rem" : "auto",
 				zIndex: zIndex,
 				borderRadius: isMoved ? "var(--radius)" : 0
 			}}
