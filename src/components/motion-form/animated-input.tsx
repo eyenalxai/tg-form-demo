@@ -13,7 +13,7 @@ type AnimatedInputProps = {
 	handleFocus: (field: keyof z.infer<typeof FormSchema>) => void
 	handleBlur: (onBlur: () => void) => void
 	setFocus: (field: keyof z.infer<typeof FormSchema>) => void
-	dummyInputRef: RefObject<HTMLTextAreaElement> | null
+	dummyInputRef: RefObject<HTMLTextAreaElement | null>
 }
 
 export const AnimatedInput = ({
@@ -44,7 +44,7 @@ export const AnimatedInput = ({
 				return
 			}
 
-			if (dummyInputRef) dummyInputRef.current.focus()
+			if (dummyInputRef.current) dummyInputRef.current.focus()
 
 			const timeoutId = setTimeout(() => {
 				setFocus(name)
