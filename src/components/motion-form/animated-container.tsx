@@ -1,3 +1,4 @@
+import { useIsMobile } from "@/lib/is-mobile"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { type ReactNode, useEffect, useState } from "react"
@@ -11,8 +12,11 @@ type AnimatedContainerProps = {
 
 export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }: AnimatedContainerProps) => {
 	const [zIndex, setZIndex] = useState(0)
+	const isMobile = useIsMobile()
 
 	useEffect(() => {
+		if (!isMobile) return
+
 		if (isMoved) {
 			setZIndex(50)
 			return
@@ -23,7 +27,9 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 		}, 300)
 
 		return () => clearTimeout(timeoutId)
-	}, [isMoved])
+	}, [isMoved, isMobile])
+
+	if (!isMobile) return children
 
 	return (
 		<motion.div
