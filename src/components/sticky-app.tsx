@@ -1,6 +1,6 @@
 "use client"
 
-import { isIpad } from "@/lib/is-mobile"
+import { useIsIpad } from "@/lib/is-mobile"
 import { cn } from "@/lib/utils"
 import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
 import { type Platform, useLaunchParams, useSwipeBehavior } from "@telegram-apps/sdk-react"
@@ -11,6 +11,7 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 	const [isSticky, setIsSticky] = useState(false)
 	const swipeBehavior = useSwipeBehavior(true)
 	const isKeyboardVisible = useVirtualKeyboardVisibility()
+	const isIpad = useIsIpad()
 
 	useEffect(() => {
 		if (isSticky) document.body.classList.add("mobile-body")
@@ -22,7 +23,7 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 		const nonStickyPlatforms = ["macos", "tdesktop", "weba", "web", "webk"] as Platform[]
 
 		setIsSticky(!nonStickyPlatforms.includes(launchParams.platform) && !isIpad)
-	}, [launchParams])
+	}, [launchParams, isIpad])
 
 	useEffect(() => {
 		if (swipeBehavior === undefined) return
