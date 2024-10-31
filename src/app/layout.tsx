@@ -3,24 +3,11 @@ import { Entrypoint } from "@/components/entrypoint"
 import { NavButtons } from "@/components/nav-buttons"
 import { NotificationDrawer } from "@/components/notification-drawer"
 import { Providers } from "@/components/providers"
-import { StickyApp } from "@/components/sticky-app"
-import { Button } from "@/components/ui/button"
-import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerDescription,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerTrigger
-} from "@/components/ui/drawer"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 import type { Metadata, Viewport } from "next"
-import Link from "next/link"
 import type { ReactNode } from "react"
 
 const TITLE = "Test Form"
