@@ -14,11 +14,9 @@ import { AnimatedInput } from "@/components/motion-form/animated-input"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
 import { useIsMobile } from "@/lib/is-mobile"
 import { useDrawer } from "@/lib/use-drawer"
-import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
 
 export const AnimatedForm = () => {
 	const isMobile = useIsMobile()
-	const isKeyboardVisible = useVirtualKeyboardVisibility()
 	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof FormSchema> | null>(null)
 
 	const form = useForm<z.infer<typeof FormSchema>>({
