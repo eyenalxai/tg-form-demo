@@ -1,5 +1,6 @@
 "use client"
 
+import { NavigationBar } from "@/components/navigation-bar"
 import { useIsIpad } from "@/lib/is-mobile"
 import { cn } from "@/lib/utils"
 import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
@@ -22,8 +23,8 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 
 		const nonStickyPlatforms = ["macos", "tdesktop", "weba", "web", "webk"] as Platform[]
 
-		setIsSticky(!nonStickyPlatforms.includes(launchParams.platform) && !isIpad)
-	}, [launchParams, isIpad])
+		setIsSticky(!nonStickyPlatforms.includes(launchParams.platform))
+	}, [launchParams])
 
 	useEffect(() => {
 		if (swipeBehavior === undefined) return
@@ -42,12 +43,13 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 					"right-0",
 					"bottom-0",
 					"overflow-x-hidden",
-					isKeyboardVisible ? "overflow-y-hidden" : "overflow-y-auto"
+					isKeyboardVisible && !isIpad ? "overflow-y-hidden" : "overflow-y-auto"
 				]
 			)}
 		>
 			<div className={cn(isSticky && "h-[calc(100% + 1px)]")}>
 				<div className={cn("container", "max-w-sm", "mx-auto", "px-2", "mt-2", "mb-24")}>{children}</div>
+				<NavigationBar />
 			</div>
 		</main>
 	)
