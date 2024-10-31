@@ -71,7 +71,9 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 			ref={elementRef}
 			layout={"position"}
 			className={cn(className)}
-			animate={{ y: isMoved && isAndroid ? targetY : 0 }}
+			animate={{
+				y: isMoved && isAndroid ? targetY : 0
+			}}
 			style={{
 				position: isMoved && isIOS ? "fixed" : "static",
 				top: isMoved && isIOS ? "6rem" : "auto",
