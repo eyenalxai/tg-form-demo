@@ -40,8 +40,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 			<body className={cn("font-sans", "antialiased", GeistSans.variable, GeistMono.variable)}>
 				<Providers attribute="class" defaultTheme="light">
 					<Entrypoint>
-						<NavButtons />
-						<Separator className={cn("my-4")} />
 						{children}
 						<NotificationDrawer />
 					</Entrypoint>
