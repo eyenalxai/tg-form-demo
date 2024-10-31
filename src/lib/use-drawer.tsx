@@ -1,9 +1,5 @@
 import { type Dispatch, type ReactNode, type SetStateAction, createContext, useContext, useState } from "react"
 
-export type DrawerContentType = {
-	body: ReactNode
-}
-
 export const DrawerContext = createContext<
 	| {
 			isOpen: boolean
