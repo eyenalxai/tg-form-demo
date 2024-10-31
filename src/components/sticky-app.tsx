@@ -12,7 +12,6 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 	const [isSticky, setIsSticky] = useState(false)
 	const swipeBehavior = useSwipeBehavior(true)
 	const isKeyboardVisible = useVirtualKeyboardVisibility()
-	const isIpad = useIsIpad()
 
 	useEffect(() => {
 		if (isSticky) document.body.classList.add("mobile-body")
@@ -43,7 +42,7 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 					"right-0",
 					"bottom-0",
 					"overflow-x-hidden",
-					isKeyboardVisible && !isIpad ? "overflow-y-hidden" : "overflow-y-auto"
+					isKeyboardVisible ? "overflow-y-hidden" : "overflow-y-auto"
 				]
 			)}
 		>

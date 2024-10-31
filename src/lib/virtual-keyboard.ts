@@ -11,6 +11,7 @@ const isKeyboardInput = (elem: HTMLElement) =>
 
 export const useVirtualKeyboardVisibility = () => {
 	const launchParams = useLaunchParams(true)
+	const isIpad = useIsIpad()
 
 	const [isVisible, setIsVisible] = useState(false)
 	const [isMobile, setIsMobile] = useState(false)
@@ -69,7 +70,7 @@ export const useVirtualKeyboardVisibility = () => {
 		}
 	}
 
-	const getSnapshot = () => isVisible && isMobile
+	const getSnapshot = () => isVisible && isMobile && !isIpad
 
 	// Assume always false for server rendering context
 	const getServerSnapshot = () => false
