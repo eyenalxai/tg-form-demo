@@ -3,6 +3,8 @@
 import { type Platform, useLaunchParams } from "@telegram-apps/sdk-react"
 import { useEffect, useState } from "react"
 
+export const isIpad = /Macintosh/.test(navigator.userAgent) && "ontouchend" in document
+
 export const useIsMobile = () => {
 	const launchParams = useLaunchParams(true)
 
@@ -13,7 +15,7 @@ export const useIsMobile = () => {
 
 		const nonMobilePlatforms = ["macos", "tdesktop", "weba", "web", "webk"] as Platform[]
 
-		setIsMobile(!nonMobilePlatforms.includes(launchParams.platform))
+		setIsMobile(!nonMobilePlatforms.includes(launchParams.platform) && !isIpad)
 	}, [launchParams])
 
 	return isMobile
