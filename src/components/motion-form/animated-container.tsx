@@ -1,4 +1,4 @@
-import { useIsMobile } from "@/lib/is-mobile"
+import { useIsAndroid, useIsIOS, useIsMobile } from "@/lib/is-mobile"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { type ReactNode, useEffect, useRef, useState } from "react"
@@ -13,7 +13,10 @@ type AnimatedContainerProps = {
 export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }: AnimatedContainerProps) => {
 	const [zIndex, setZIndex] = useState(0)
 	const [targetY, setTargetY] = useState(0)
+
 	const isMobile = useIsMobile()
+	const isAndroid = useIsAndroid()
+	const isIOS = useIsIOS()
 
 	const elementRef = useRef<HTMLDivElement>(null)
 
@@ -36,13 +39,15 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 		const calculatePosition = () => {
 			if (elementRef.current) {
 				const elementRect = elementRef.current.getBoundingClientRect()
-				const viewportOffset = 128
+				const viewportOffset = 100
 				const currentOffset = elementRect.top
 				setTargetY(viewportOffset - currentOffset)
 			}
 		}
 
-		calculatePosition()
+		const timeoutId = setTimeout(() => {
+			calculatePosition()
+		}, 100)
 
 		const mainWrapper = document.getElementById("main-wrapper")
 
@@ -54,6 +59,8 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 			if (mainWrapper) {
 				mainWrapper.removeEventListener("scroll", calculatePosition)
 			}
+
+			clearTimeout(timeoutId)
 		}
 	}, [])
 
@@ -64,8 +71,13 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 			ref={elementRef}
 			layout={"position"}
 			className={cn(className)}
-			animate={{ y: isMoved ? targetY : 0 }}
+			animate={{ y: isMoved && isAndroid ? targetY : 0 }}
 			style={{
+				position: isMoved && isIOS ? "fixed" : "static",
+				top: isMoved && isIOS ? "6rem" : "auto",
+				width: isMoved && isIOS ? "calc(100% - 2rem)" : "100%",
+				left: isMoved && isIOS ? "1rem" : "auto",
+				right: isMoved && isIOS ? "1rem" : "auto",
 				zIndex: zIndex,
 				borderRadius: isMoved ? "var(--radius)" : 0
 			}}
