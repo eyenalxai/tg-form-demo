@@ -77,7 +77,7 @@ const MultiValueInput = forwardRef<HTMLInputElement, MultiInputProps>(({ value, 
 		<div
 			className={cn("w-full", "space-y-4")}
 			onMouseDown={(e) => {
-				if ((e.target as Element) !== inputRef.current) {
+				if ((e.target as Element) !== inputRef.current && !props.disabled) {
 					e.preventDefault()
 				}
 			}}
@@ -92,13 +92,7 @@ const MultiValueInput = forwardRef<HTMLInputElement, MultiInputProps>(({ value, 
 					ref={inputRef}
 					{...props}
 				/>
-				<Button
-					disabled={inputValue.trim() === "" || internalValues.includes(inputValue.trim())}
-					onMouseDown={(e) => e.preventDefault()}
-					onClick={handleAddValue}
-					size="sm"
-					type="button"
-				>
+				<Button onClick={handleAddValue} size="sm" type="button">
 					<Plus className="size-4" />
 				</Button>
 			</div>
@@ -109,7 +103,6 @@ const MultiValueInput = forwardRef<HTMLInputElement, MultiInputProps>(({ value, 
 							key={value}
 							variant="secondary"
 							className={cn("flex", "h-auto", "items-center", "justify-between", "px-3", "py-1")}
-							onMouseDown={(e) => e.preventDefault()}
 							onClick={() => handleDeleteValue(index)}
 							type="button"
 							asChild
