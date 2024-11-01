@@ -18,7 +18,7 @@ export const AnimatedForm = () => {
 		setIsOpen(true)
 	}
 
-	const { form, isMobile, focusedField, setFocusedField, isReadOnly, setIsReadOnly, dummyInputRef, handleSubmit } =
+	const { form, isMobile, isDisabled, focusedField, readOnly, handleFocus, handleBlur, dummyInputRef, handleSubmit } =
 		useAnimatedForm(FormSchema, formDefaultValues, onSubmit)
 
 	return (
@@ -59,16 +59,11 @@ export const AnimatedForm = () => {
 											<FormLabel>{field.name}</FormLabel>
 											<FormControl>
 												<Input
-													readOnly={isMobile && isReadOnly}
-													disabled={isMobile && focusedField !== null && focusedField !== field.name}
+													readOnly={readOnly}
+													disabled={isDisabled(field.name)}
 													placeholder={field.name}
-													onFocus={() => setFocusedField(name)}
-													onBlur={() => {
-														if (!isReadOnly) {
-															setIsReadOnly(true)
-															setFocusedField(null)
-														}
-													}}
+													onFocus={() => handleFocus(name)}
+													onBlur={() => handleBlur()}
 													{...field}
 												/>
 											</FormControl>

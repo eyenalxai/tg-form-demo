@@ -11,7 +11,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 ) => {
 	const isMobile = useIsMobile()
 	const [focusedField, setFocusedField] = useState<Path<Output> | null>(null)
-	const [isReadOnly, setIsReadOnly] = useState(true)
+	const [readOnly, setReadOnly] = useState(true)
 	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
 
 	const form = useForm<Output>({
@@ -21,7 +21,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 
 	useEffect(() => {
 		if (focusedField) {
-			setIsReadOnly(false)
+			setReadOnly(false)
 
 			if (!isMobile) {
 				form.setFocus(focusedField)
@@ -40,13 +40,23 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		}
 	}, [isMobile, focusedField, form])
 
+	const handleFocus = (field: Path<Output>) => setFocusedField(field)
+	const handleBlur = () => {
+		if (!readOnly) {
+			setReadOnly(true)
+			setFocusedField(null)
+		}
+	}
+
 	return {
 		form,
 		isMobile,
+		isDisabled: (field: Path<Output>) => isMobile && focusedField !== null && focusedField !== field,
 		focusedField,
-		setFocusedField,
-		isReadOnly,
-		setIsReadOnly,
+		readOnly: isMobile && readOnly,
+		handleFocus,
+		handleBlur,
+		setReadOnly,
 		dummyInputRef,
 		handleSubmit: form.handleSubmit(onSubmit)
 	}
