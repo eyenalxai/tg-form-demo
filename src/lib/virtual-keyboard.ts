@@ -1,7 +1,6 @@
 "use client"
 
-import { useIsIpad } from "@/lib/is-mobile"
-import { type Platform, useLaunchParams } from "@telegram-apps/sdk-react"
+import { useIsIpad, useIsMobile } from "@/lib/is-mobile"
 import { useEffect, useRef, useState, useSyncExternalStore } from "react"
 
 const isKeyboardInput = (elem: HTMLElement) =>
@@ -9,20 +8,13 @@ const isKeyboardInput = (elem: HTMLElement) =>
 		!["button", "submit", "checkbox", "file", "image"].includes((elem as HTMLInputElement).type)) ||
 	elem.hasAttribute("contenteditable")
 
+const isButton = (elem: HTMLElement) => elem.tagName === "BUTTON"
+
 export const useVirtualKeyboardVisibility = () => {
-	const launchParams = useLaunchParams(true)
 	const isIpad = useIsIpad()
 
 	const [isVisible, setIsVisible] = useState(false)
-	const [isMobile, setIsMobile] = useState(false)
-
-	useEffect(() => {
-		if (launchParams === undefined) return
-
-		const nonMobilePlatforms = ["macos", "tdesktop", "weba", "web", "webk"] as Platform[]
-
-		setIsMobile(!nonMobilePlatforms.includes(launchParams.platform))
-	}, [launchParams])
+	const isMobile = useIsMobile()
 
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -34,6 +26,12 @@ export const useVirtualKeyboardVisibility = () => {
 			}
 			if (e.target) {
 				const target = e.target as HTMLElement
+
+				if (isButton(target)) {
+					timeoutRef.current = setTimeout(() => setIsVisible(false), 100)
+					return
+				}
+
 				if (isKeyboardInput(target)) {
 					setIsVisible(true)
 				}
