@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
 import { Plus, X } from "lucide-react"
 import type React from "react"
 import {
@@ -91,7 +92,13 @@ const MultiValueInput = forwardRef<HTMLInputElement, MultiInputProps>(({ value, 
 					ref={inputRef}
 					{...props}
 				/>
-				<Button onMouseDown={(e) => e.preventDefault()} onClick={handleAddValue} size="sm" type="button">
+				<Button
+					disabled={inputValue.trim() === "" || internalValues.includes(inputValue.trim())}
+					onMouseDown={(e) => e.preventDefault()}
+					onClick={handleAddValue}
+					size="sm"
+					type="button"
+				>
 					<Plus className="size-4" />
 				</Button>
 			</div>
@@ -105,9 +112,12 @@ const MultiValueInput = forwardRef<HTMLInputElement, MultiInputProps>(({ value, 
 							onMouseDown={(e) => e.preventDefault()}
 							onClick={() => handleDeleteValue(index)}
 							type="button"
+							asChild
 						>
-							<span className={cn("mr-2", "truncate")}>{value}</span>
-							<X className={cn("size-3", "shrink-0")} />
+							<motion.button layout={"position"}>
+								<span className={cn("mr-2", "truncate")}>{value}</span>
+								<X className={cn("size-3", "shrink-0")} />
+							</motion.button>
 						</Button>
 					))}
 				</div>
