@@ -1,59 +1,25 @@
 "use client"
 
+import { AnimatedContainer } from "@/components/motion-form/animated-container"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
-import { cn } from "@/lib/utils"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { MotionConfig, motion } from "framer-motion"
-import { useEffect, useRef, useState } from "react"
-import { useForm } from "react-hook-form"
-import type { z } from "zod"
-
-import { AnimatedContainer } from "@/components/motion-form/animated-container"
 import { Input } from "@/components/ui/input"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
-import { useIsMobile } from "@/lib/is-mobile"
+import { useAnimatedForm } from "@/lib/use-animated-form"
 import { useDrawer } from "@/lib/use-drawer"
+import { cn } from "@/lib/utils"
+import { MotionConfig, motion } from "framer-motion"
+import type { z } from "zod"
 
 export const AnimatedForm = () => {
-	const isMobile = useIsMobile()
-	const [focusedField, setFocusedField] = useState<keyof z.infer<typeof FormSchema> | null>(null)
-
-	const form = useForm<z.infer<typeof FormSchema>>({
-		resolver: zodResolver(FormSchema),
-		defaultValues: formDefaultValues
-	})
-
 	const { setIsOpen } = useDrawer()
 
-	function onSubmit(_values: z.infer<typeof FormSchema>) {
+	const onSubmit = (_values: z.infer<typeof FormSchema>) => {
 		setIsOpen(true)
 	}
 
-	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
-
-	const [isReadOnly, setIsReadOnly] = useState(true)
-
-	useEffect(() => {
-		if (focusedField) {
-			setIsReadOnly(false)
-
-			if (!isMobile) {
-				form.setFocus(focusedField)
-				return
-			}
-
-			if (dummyInputRef.current) dummyInputRef.current.focus()
-
-			const timeoutId = setTimeout(() => {
-				form.setFocus(focusedField)
-			}, 300)
-
-			return () => {
-				clearTimeout(timeoutId)
-			}
-		}
-	}, [isMobile, focusedField, form])
+	const { form, isMobile, focusedField, setFocusedField, isReadOnly, setIsReadOnly, dummyInputRef, handleSubmit } =
+		useAnimatedForm(FormSchema, formDefaultValues, onSubmit)
 
 	return (
 		<Form {...form}>
@@ -76,7 +42,7 @@ export const AnimatedForm = () => {
 						"focus:outline-none"
 					)}
 				/>
-				<form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex", "w-full", "flex-col", "z-100", "gap-y-6")}>
+				<form onSubmit={handleSubmit} className={cn("flex", "w-full", "flex-col", "z-100", "gap-y-6")}>
 					{formFields.map((name) => {
 						return (
 							<FormField
