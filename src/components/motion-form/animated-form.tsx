@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form"
 import type { z } from "zod"
 
 import { AnimatedContainer } from "@/components/motion-form/animated-container"
-import { AnimatedInput } from "@/components/motion-form/animated-input"
+import { AnimatedInputAnother } from "@/components/motion-form/animated-input-another"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
 import { useIsMobile } from "@/lib/is-mobile"
 import { useDrawer } from "@/lib/use-drawer"
@@ -28,15 +28,6 @@ export const AnimatedForm = () => {
 
 	function onSubmit(_values: z.infer<typeof FormSchema>) {
 		setIsOpen(true)
-	}
-
-	const handleFocus = (field: keyof z.infer<typeof FormSchema>) => {
-		setFocusedField(field)
-	}
-
-	const handleBlur = (onBlur: () => void) => {
-		setFocusedField(null)
-		onBlur()
 	}
 
 	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
@@ -74,18 +65,18 @@ export const AnimatedForm = () => {
 								<FormField
 									control={form.control}
 									name={name}
-									render={({ field }) => (
+									render={({ field: { onBlur, ...field } }) => (
 										<FormItem>
 											<FormLabel>{field.name}</FormLabel>
 											<FormControl>
-												<AnimatedInput
-													focusedField={focusedField}
-													name={field.name}
-													control={form.control}
-													handleFocus={handleFocus}
-													handleBlur={handleBlur}
+												<AnimatedInputAnother
+													isFocused={focusedField === field.name}
+													setFocusedField={setFocusedField}
+													disabled={isMobile && focusedField !== null && focusedField !== field.name}
 													setFocus={form.setFocus}
 													dummyInputRef={dummyInputRef}
+													placeholder={field.name}
+													{...field}
 												/>
 											</FormControl>
 										</FormItem>
