@@ -5,12 +5,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { MotionConfig, motion } from "framer-motion"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import type { z } from "zod"
 
 import { AnimatedContainer } from "@/components/motion-form/animated-container"
-import { AnimatedInputAnother } from "@/components/motion-form/animated-input-another"
+import { Input } from "@/components/ui/input"
 import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
 import { useIsMobile } from "@/lib/is-mobile"
 import { useDrawer } from "@/lib/use-drawer"
@@ -31,6 +31,29 @@ export const AnimatedForm = () => {
 	}
 
 	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
+
+	const [isReadOnly, setIsReadOnly] = useState(true)
+
+	useEffect(() => {
+		if (focusedField) {
+			setIsReadOnly(false)
+
+			if (!isMobile) {
+				form.setFocus(focusedField)
+				return
+			}
+
+			if (dummyInputRef.current) dummyInputRef.current.focus()
+
+			const timeoutId = setTimeout(() => {
+				form.setFocus(focusedField)
+			}, 300)
+
+			return () => {
+				clearTimeout(timeoutId)
+			}
+		}
+	}, [isMobile, focusedField, form])
 
 	return (
 		<Form {...form}>
@@ -56,33 +79,37 @@ export const AnimatedForm = () => {
 				<form onSubmit={form.handleSubmit(onSubmit)} className={cn("flex", "w-full", "flex-col", "z-100", "gap-y-6")}>
 					{formFields.map((name) => {
 						return (
-							<AnimatedContainer
+							<FormField
 								key={name}
-								isMoved={focusedField === name}
-								anotherMoved={focusedField !== null && focusedField !== name}
-								className={cn("bg-background")}
-							>
-								<FormField
-									control={form.control}
-									name={name}
-									render={({ field: { onBlur, ...field } }) => (
+								control={form.control}
+								name={name}
+								render={({ field: { onBlur, ...field } }) => (
+									<AnimatedContainer
+										isMoved={focusedField === name}
+										anotherMoved={focusedField !== null && focusedField !== name}
+										className={cn("bg-background")}
+									>
 										<FormItem>
 											<FormLabel>{field.name}</FormLabel>
 											<FormControl>
-												<AnimatedInputAnother
-													isFocused={focusedField === field.name}
-													setFocusedField={setFocusedField}
+												<Input
+													readOnly={isMobile && isReadOnly}
 													disabled={isMobile && focusedField !== null && focusedField !== field.name}
-													setFocus={form.setFocus}
-													dummyInputRef={dummyInputRef}
 													placeholder={field.name}
+													onFocus={() => setFocusedField(name)}
+													onBlur={() => {
+														if (!isReadOnly) {
+															setIsReadOnly(true)
+															setFocusedField(null)
+														}
+													}}
 													{...field}
 												/>
 											</FormControl>
 										</FormItem>
-									)}
-								/>
-							</AnimatedContainer>
+									</AnimatedContainer>
+								)}
+							/>
 						)
 					})}
 					<motion.div layout={"position"}>
