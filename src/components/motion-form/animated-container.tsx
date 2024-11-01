@@ -64,7 +64,12 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 		}
 	}, [])
 
-	if (!isMobile) return children
+	if (!isMobile)
+		return (
+			<motion.div layout className={cn("w-full")}>
+				{children}
+			</motion.div>
+		)
 
 	return (
 		<motion.div
