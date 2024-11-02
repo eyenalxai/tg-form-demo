@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
 import { Plus, X } from "lucide-react"
 import type React from "react"
 import {
@@ -42,6 +41,8 @@ const MultiValueInput = forwardRef<HTMLInputElement, MultiInputProps>(({ value, 
 	}
 
 	const handleAddValue = () => {
+		if (props.disabled) return
+
 		if (inputValue.trim() !== "") {
 			const newValues = [...internalValues, inputValue.trim()]
 			setInternalValues(newValues)
@@ -51,12 +52,16 @@ const MultiValueInput = forwardRef<HTMLInputElement, MultiInputProps>(({ value, 
 	}
 
 	const handleDeleteValue = (index: number) => {
+		if (props.disabled) return
+
 		const newValues = internalValues.filter((_, i) => i !== index)
 		setInternalValues(newValues)
 		notifyChange(newValues)
 	}
 
 	const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (props.disabled) return
+
 		if (e.key === "Enter") {
 			e.preventDefault()
 			handleAddValue()
@@ -92,7 +97,12 @@ const MultiValueInput = forwardRef<HTMLInputElement, MultiInputProps>(({ value, 
 					ref={inputRef}
 					{...props}
 				/>
-				<Button onClick={handleAddValue} size="sm" type="button">
+				<Button
+					disabled={inputValue.trim() === "" || internalValues.includes(inputValue.trim())}
+					onClick={handleAddValue}
+					size="sm"
+					type="button"
+				>
 					<Plus className="size-4" />
 				</Button>
 			</div>
@@ -100,17 +110,16 @@ const MultiValueInput = forwardRef<HTMLInputElement, MultiInputProps>(({ value, 
 				<div className={cn("grid", "grid-cols-2", "gap-2", "sm:grid-cols-3")}>
 					{internalValues.map((value, index) => (
 						<Button
+							disabled={props.disabled}
 							key={value}
 							variant="secondary"
 							className={cn("flex", "h-auto", "items-center", "justify-between", "px-3", "py-1")}
+							onMouseDown={(e) => e.preventDefault()}
 							onClick={() => handleDeleteValue(index)}
 							type="button"
-							asChild
 						>
-							<motion.button layout={"position"}>
-								<span className={cn("mr-2", "truncate")}>{value}</span>
-								<X className={cn("size-3", "shrink-0")} />
-							</motion.button>
+							<span className={cn("mr-2", "truncate")}>{value}</span>
+							<X className={cn("size-3", "shrink-0")} />
 						</Button>
 					))}
 				</div>
