@@ -1,28 +1,20 @@
 "use client"
 
 import { NavigationBar } from "@/components/navigation-bar"
+import { useIsMobile } from "@/lib/is-mobile"
 import { cn } from "@/lib/utils"
 import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
-import { type Platform, useLaunchParams, useSwipeBehavior } from "@telegram-apps/sdk-react"
-import { type ReactNode, useEffect, useState } from "react"
+import { useSwipeBehavior } from "@telegram-apps/sdk-react"
+import { type ReactNode, useEffect } from "react"
 
 export const StickyApp = ({ children }: { children: ReactNode }) => {
-	const launchParams = useLaunchParams(true)
-	const [isSticky, setIsSticky] = useState(false)
+	const isMobile = useIsMobile()
 	const swipeBehavior = useSwipeBehavior(true)
 	const isKeyboardVisible = useVirtualKeyboardVisibility()
 
 	useEffect(() => {
-		if (isSticky) document.body.classList.add("mobile-body")
-	}, [isSticky])
-
-	useEffect(() => {
-		if (launchParams === undefined) return
-
-		const nonStickyPlatforms = ["macos", "tdesktop", "weba", "web", "webk"] as Platform[]
-
-		setIsSticky(!nonStickyPlatforms.includes(launchParams.platform))
-	}, [launchParams])
+		if (isMobile) document.body.classList.add("mobile-body")
+	}, [isMobile])
 
 	useEffect(() => {
 		if (swipeBehavior === undefined) return
@@ -34,7 +26,7 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 		<main
 			id={"main-wrapper"}
 			className={cn(
-				isSticky && [
+				isMobile && [
 					"fixed",
 					"left-0",
 					"top-0",
@@ -45,7 +37,7 @@ export const StickyApp = ({ children }: { children: ReactNode }) => {
 				]
 			)}
 		>
-			<div className={cn(isSticky && "h-[calc(100% + 1px)]")}>
+			<div className={cn(isMobile && "h-[calc(100% + 1px)]")}>
 				<div className={cn("container", "max-w-sm", "mx-auto", "px-2", "mt-2", "mb-48")}>{children}</div>
 				<NavigationBar />
 			</div>
