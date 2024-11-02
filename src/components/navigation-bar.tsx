@@ -24,12 +24,13 @@ export const NavigationBar = () => {
 				"fixed",
 				"bg-white",
 				"bottom-0",
-				["w-full", isIOS && !isIpad ? ["h-[84px]", "pb-6"] : "h-[64px]"],
-				"flex",
-				["justify-between", "items-center"],
+				["w-full", isIOS && !isIpad ? ["h-[124px]", "pb-6"] : "h-[104px]"],
+				"grid",
+				"grid-cols-2",
+				"gap-2",
+				["content-center"],
 				"px-6",
 				"border-t",
-
 				"border-cloud",
 				"z-90"
 			)}
@@ -40,11 +41,11 @@ export const NavigationBar = () => {
 			<Button variant={pathname === "/dialog" ? "default" : "outline"} asChild>
 				<Link href={"/dialog"}>Dialog</Link>
 			</Button>
-			<Button variant={pathname === "/animated-single" ? "default" : "outline"} className={"col-span-2"} asChild>
-				<Link href={"/animated-single"}>A S</Link>
+			<Button variant={pathname === "/animated-single" ? "default" : "outline"} asChild>
+				<Link href={"/animated-single"}>Animated Single</Link>
 			</Button>
-			<Button variant={pathname === "/animated-multi" ? "default" : "outline"} className={"col-span-2"} asChild>
-				<Link href={"/animated-multi"}>A M</Link>
+			<Button variant={pathname === "/animated-multi" ? "default" : "outline"} asChild>
+				<Link href={"/animated-multi"}>Animated Multi</Link>
 			</Button>
 		</nav>
 	)
