@@ -36,6 +36,8 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 	}, [isMoved, isMobile])
 
 	useEffect(() => {
+		if (!isMobile) return
+
 		const calculatePosition = () => {
 			if (elementRef.current) {
 				const elementRect = elementRef.current.getBoundingClientRect()
@@ -62,11 +64,11 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 
 			clearTimeout(timeoutId)
 		}
-	}, [])
+	}, [isMobile])
 
 	if (!isMobile)
 		return (
-			<motion.div layout={"position"} className={cn("w-full")}>
+			<motion.div ref={elementRef} layout={"position"} className={cn("w-full")}>
 				{children}
 			</motion.div>
 		)
