@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
+import { TextFormSchema, textFormDefaultValues, textFormFields } from "@/lib/text-form"
 import { useDrawer } from "@/lib/use-drawer"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -15,21 +15,21 @@ type DefaultFormProps = {
 }
 
 export const DefaultForm = ({ className }: DefaultFormProps) => {
-	const form = useForm<z.infer<typeof FormSchema>>({
-		resolver: zodResolver(FormSchema),
-		defaultValues: formDefaultValues
+	const form = useForm<z.infer<typeof TextFormSchema>>({
+		resolver: zodResolver(TextFormSchema),
+		defaultValues: textFormDefaultValues
 	})
 
 	const { setIsOpen } = useDrawer()
 
-	function onSubmit(_values: z.infer<typeof FormSchema>) {
+	function onSubmit(_values: z.infer<typeof TextFormSchema>) {
 		setIsOpen(true)
 	}
 
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className={cn("space-y-6", className)}>
-				{formFields.map((name) => (
+				{textFormFields.map((name) => (
 					<FormField
 						key={name}
 						control={form.control}
