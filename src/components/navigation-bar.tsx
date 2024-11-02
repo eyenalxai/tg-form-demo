@@ -40,8 +40,11 @@ export const NavigationBar = () => {
 			<Button variant={pathname === "/dialog" ? "default" : "outline"} asChild>
 				<Link href={"/dialog"}>Dialog</Link>
 			</Button>
-			<Button variant={pathname === "/animated" ? "default" : "outline"} className={"col-span-2"} asChild>
-				<Link href={"/animated"}>Animated</Link>
+			<Button variant={pathname === "/animated-single" ? "default" : "outline"} className={"col-span-2"} asChild>
+				<Link href={"/animated-single"}>A S</Link>
+			</Button>
+			<Button variant={pathname === "/animated-multi" ? "default" : "outline"} className={"col-span-2"} asChild>
+				<Link href={"/animated-multi"}>A M</Link>
 			</Button>
 		</nav>
 	)
