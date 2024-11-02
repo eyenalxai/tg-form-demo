@@ -15,7 +15,6 @@ export const useIsIpad = () => {
 
 export const useIsMobile = () => {
 	const launchParams = useLaunchParams(true)
-	const isIpad = useIsIpad()
 
 	const [isMobile, setIsMobile] = useState(false)
 
@@ -24,8 +23,8 @@ export const useIsMobile = () => {
 
 		const nonMobilePlatforms = ["macos", "tdesktop", "weba", "web", "webk"] as Platform[]
 
-		setIsMobile(!nonMobilePlatforms.includes(launchParams.platform) && !isIpad)
-	}, [launchParams, isIpad])
+		setIsMobile(!nonMobilePlatforms.includes(launchParams.platform))
+	}, [launchParams])
 
 	return isMobile
 }
