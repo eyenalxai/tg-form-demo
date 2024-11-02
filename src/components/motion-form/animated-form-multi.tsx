@@ -1,25 +1,25 @@
 "use client"
 
 import { AnimatedContainer } from "@/components/motion-form/animated-container"
+import { MultiValueInput } from "@/components/multi-value-input"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { FormSchema, formDefaultValues, formFields } from "@/lib/form"
+import { MultiFormSchema, multiFormDefaultValues, multiFormFields } from "@/lib/multi-form"
 import { useAnimatedForm } from "@/lib/use-animated-form"
 import { useDrawer } from "@/lib/use-drawer"
 import { cn } from "@/lib/utils"
 import { MotionConfig, motion } from "framer-motion"
 import type { z } from "zod"
 
-export const AnimatedForm = () => {
+export const AnimatedFormMulti = () => {
 	const { setIsOpen } = useDrawer()
 
-	const onSubmit = (_values: z.infer<typeof FormSchema>) => {
+	const onSubmit = (_values: z.infer<typeof MultiFormSchema>) => {
 		setIsOpen(true)
 	}
 
 	const { form, isMobile, isDisabled, focusedField, readOnly, handleFocus, handleBlur, dummyInputRef, handleSubmit } =
-		useAnimatedForm(FormSchema, formDefaultValues, onSubmit)
+		useAnimatedForm(MultiFormSchema, multiFormDefaultValues, onSubmit)
 
 	return (
 		<Form {...form}>
@@ -43,7 +43,7 @@ export const AnimatedForm = () => {
 					)}
 				/>
 				<form onSubmit={handleSubmit} className={cn("flex", "w-full", "flex-col", "z-100", "gap-y-6")}>
-					{formFields.map((name) => {
+					{multiFormFields.map((name) => {
 						return (
 							<FormField
 								key={name}
@@ -58,12 +58,12 @@ export const AnimatedForm = () => {
 										<FormItem>
 											<FormLabel>{field.name}</FormLabel>
 											<FormControl>
-												<Input
+												<MultiValueInput
 													readOnly={readOnly}
 													disabled={isDisabled(field.name)}
 													placeholder={field.name}
 													onFocus={() => handleFocus(name)}
-													onBlur={() => handleBlur()}
+													onBlur={() => handleBlur(onBlur)}
 													{...field}
 												/>
 											</FormControl>
