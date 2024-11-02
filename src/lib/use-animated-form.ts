@@ -41,11 +41,13 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 	}, [isMobile, focusedField, form])
 
 	const handleFocus = (field: Path<Output>) => setFocusedField(field)
-	const handleBlur = () => {
+
+	const handleBlur = (onBlur: () => void) => {
 		if (!readOnly) {
 			setReadOnly(true)
 			setFocusedField(null)
 		}
+		onBlur()
 	}
 
 	return {
