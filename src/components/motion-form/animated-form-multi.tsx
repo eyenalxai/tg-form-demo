@@ -43,6 +43,20 @@ export const AnimatedFormMulti = () => {
 					)}
 				/>
 				<form onSubmit={handleSubmit} className={cn("flex", "w-full", "flex-col", "z-100", "gap-y-6")}>
+					{isMobile && (
+						<div
+							className={cn(
+								"fixed",
+								"pointer-events-none",
+								["transition-[backdrop-filter]", "will-change-[backdrop-filter]", "duration-200", "ease-in-out"],
+								focusedField !== null && ["backdrop-blur-sm"],
+								"inset-0",
+								"w-full",
+								"h-full",
+								"z-10"
+							)}
+						/>
+					)}
 					{multiFormFields.map((name) => {
 						return (
 							<FormField
@@ -50,11 +64,7 @@ export const AnimatedFormMulti = () => {
 								control={form.control}
 								name={name}
 								render={({ field: { onBlur, ...field } }) => (
-									<AnimatedContainer
-										isMoved={focusedField === name}
-										anotherMoved={focusedField !== null && focusedField !== name}
-										className={cn("bg-background")}
-									>
+									<AnimatedContainer isMoved={focusedField === name} className={cn("bg-background")}>
 										<FormItem>
 											<FormLabel>{field.name}</FormLabel>
 											<FormControl>
