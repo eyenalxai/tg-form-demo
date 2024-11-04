@@ -13,6 +13,7 @@ type AnimatedContainerProps = {
 export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }: AnimatedContainerProps) => {
 	const [zIndex, setZIndex] = useState(0)
 	const [targetY, setTargetY] = useState(0)
+	const [elementHeight, setElementHeight] = useState(0)
 
 	const isMobile = useIsMobile()
 	const isAndroid = useIsAndroid()
@@ -44,6 +45,7 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 				const viewportOffset = 100
 				const currentOffset = elementRect.top
 				setTargetY(viewportOffset - currentOffset)
+				setElementHeight(elementRect.height)
 			}
 		}
 
@@ -74,32 +76,35 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 		)
 
 	return (
-		<motion.div
-			ref={elementRef}
-			layout={"position"}
-			className={cn(className)}
-			animate={{
-				y: isMoved && isAndroid ? targetY : 0
-			}}
-			style={{
-				position: isMoved && isIOS ? "fixed" : "static",
-				top: isMoved && isIOS ? "6rem" : "auto",
-				width: isMoved && isIOS ? "calc(100% - 2rem)" : "100%",
-				left: isMoved && isIOS ? "1rem" : "auto",
-				right: isMoved && isIOS ? "1rem" : "auto",
-				zIndex: zIndex,
-				borderRadius: isMoved ? "var(--radius)" : 0
-			}}
-		>
-			<div
-				className={cn(
-					["transition-all", "duration-200", "ease-in-out"],
-					anotherMoved && ["opacity-50", "blur-[2px]"],
-					isMoved && ["p-4", "pt-2", "shadow-elevated", "rounded-md"]
-				)}
+		<>
+			{isIOS && isMoved && <div style={{ height: elementHeight + 16 }} />}
+			<motion.div
+				ref={elementRef}
+				layout={"position"}
+				className={cn(className)}
+				animate={{
+					y: isMoved && isAndroid ? targetY : 0
+				}}
+				style={{
+					position: isMoved && isIOS ? "fixed" : "static",
+					top: isMoved && isIOS ? "6rem" : "auto",
+					width: isMoved && isIOS ? "calc(100% - 2rem)" : "100%",
+					left: isMoved && isIOS ? "1rem" : "auto",
+					right: isMoved && isIOS ? "1rem" : "auto",
+					zIndex: zIndex,
+					borderRadius: isMoved ? "var(--radius)" : 0
+				}}
 			>
-				{children}
-			</div>
-		</motion.div>
+				<div
+					className={cn(
+						["transition-all", "duration-200", "ease-in-out"],
+						anotherMoved && ["opacity-50", "blur-[2px]"],
+						isMoved && ["p-4", "pt-2", "shadow-elevated", "rounded-md"]
+					)}
+				>
+					{children}
+				</div>
+			</motion.div>
+		</>
 	)
 }
