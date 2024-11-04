@@ -29,8 +29,14 @@ export const AnimatedFormText = () => {
 		handleBlur,
 		dummyInputRef,
 		handleSubmit,
-		animationDuration
-	} = useAnimatedForm(TextFormSchema, textFormDefaultValues, onSubmit)
+		animationDuration,
+		preFocusStyles
+	} = useAnimatedForm(TextFormSchema, textFormDefaultValues, onSubmit, [
+		"placeholder:text-foreground",
+		"focus-visible:ring-offset-0",
+		"focus-visible:outline-0",
+		"focus-visible:ring-0"
+	])
 
 	return (
 		<Form {...form}>
@@ -90,6 +96,7 @@ export const AnimatedFormText = () => {
 													placeholder={placeholder || field.name}
 													onFocus={() => handleFocus(field.name, { focusHackDefaultValue: "" })}
 													onBlur={() => handleBlur(onBlur)}
+													className={cn(preFocusStyles)}
 													{...field}
 												/>
 											</FormControl>
