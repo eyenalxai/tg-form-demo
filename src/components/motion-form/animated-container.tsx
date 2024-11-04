@@ -87,7 +87,7 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 			<div
 				className={cn(
 					["transition-all", "duration-200", "ease-in-out"],
-					anotherMoved && ["opacity-50", "blur-[2px]"],
+					anotherMoved && "opacity-30",
 					isMoved && ["p-4", "pt-2", "shadow-elevated", "rounded-md"]
 				)}
 			>
