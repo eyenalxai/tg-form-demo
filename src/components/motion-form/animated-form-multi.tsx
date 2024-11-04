@@ -87,7 +87,7 @@ export const AnimatedFormMulti = () => {
 													readOnly={readOnly}
 													disabled={isDisabled(field.name)}
 													placeholder={field.name}
-													onFocus={() => handleFocus(name, [])}
+													onFocus={() => handleFocus(name)}
 													onBlur={() => handleBlur(onBlur)}
 													{...field}
 												/>
