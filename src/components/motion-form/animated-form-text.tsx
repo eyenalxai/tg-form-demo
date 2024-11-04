@@ -43,6 +43,20 @@ export const AnimatedFormText = () => {
 					)}
 				/>
 				<form onSubmit={handleSubmit} className={cn("flex", "w-full", "flex-col", "z-100", "gap-y-6")}>
+					{isMobile && (
+						<div
+							className={cn(
+								"fixed",
+								"pointer-events-none",
+								["transition-[backdrop-filter]", "will-change-[backdrop-filter]", "duration-200", "ease-in-out"],
+								focusedField !== null && ["backdrop-blur-sm"],
+								"inset-0",
+								"w-full",
+								"h-full",
+								"z-10"
+							)}
+						/>
+					)}
 					{textFormFields.map((name) => {
 						return (
 							<FormField
