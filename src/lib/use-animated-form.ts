@@ -21,6 +21,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 
 	const isMobile = useIsMobile()
 	const isIOS = useIsIOS()
+
 	const [focusedField, setFocusedField] = useState<Path<Output> | null>(null)
 	const [readOnly, setReadOnly] = useState(true)
 	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
