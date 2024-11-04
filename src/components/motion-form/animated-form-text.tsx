@@ -50,11 +50,7 @@ export const AnimatedFormText = () => {
 								control={form.control}
 								name={name}
 								render={({ field: { onBlur, ...field } }) => (
-									<AnimatedContainer
-										isMoved={focusedField === name}
-										anotherMoved={focusedField !== null && focusedField !== name}
-										className={cn("bg-background")}
-									>
+									<AnimatedContainer isMoved={focusedField === name} className={cn("bg-background")}>
 										<FormItem>
 											<FormLabel>{field.name}</FormLabel>
 											<FormControl>
