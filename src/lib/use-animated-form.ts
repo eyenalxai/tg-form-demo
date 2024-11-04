@@ -23,14 +23,16 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 	})
 
 	const handleFocus = (field: Path<Output>) => {
+		if (!isMobile) {
+			form.setFocus(field)
+			return
+		}
+
 		if (focusedField !== field) {
 			setFocusedField(field)
 			setReadOnly(false)
 
-			if (!isMobile) {
-				form.setFocus(field)
-				return
-			}
+			form.setFocus(field)
 
 			if (dummyInputRef.current) dummyInputRef.current.focus()
 
