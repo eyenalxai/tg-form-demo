@@ -1,7 +1,7 @@
 import { useIsMobile } from "@/lib/is-mobile"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
-import { type DefaultValues, type FieldValues, type Path, useForm } from "react-hook-form"
+import { type DefaultValues, type FieldValues, type Path, type PathValue, useForm } from "react-hook-form"
 import type { ZodType, ZodTypeDef } from "zod"
 
 export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input>, Output extends FieldValues, Input>(
@@ -9,6 +9,9 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 	defaultValues: DefaultValues<Output>,
 	onSubmit: (values: Output) => void
 ) => {
+	const animationDuration = 0.4
+	const animationDurationMs = animationDuration * 1000
+
 	const isMobile = useIsMobile()
 	const [focusedField, setFocusedField] = useState<Path<Output> | null>(null)
 	const [readOnly, setReadOnly] = useState(true)
@@ -32,15 +35,26 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 
 			const timeoutId = setTimeout(() => {
 				form.setFocus(focusedField)
-			}, 400)
+			}, animationDurationMs)
 
 			return () => {
 				clearTimeout(timeoutId)
 			}
 		}
-	}, [isMobile, focusedField, form])
+	}, [animationDurationMs, isMobile, focusedField, form])
 
-	const handleFocus = (field: Path<Output>) => setFocusedField(field)
+	const handleFocus = (field: Path<Output>, defaultValue: PathValue<Output, Path<Output>>) => {
+		const currentValue = form.getValues()[field]
+		form.setValue(field, defaultValue)
+
+		setTimeout(() => {
+			setFocusedField(field)
+
+			setTimeout(() => {
+				form.setValue(field, currentValue)
+			}, animationDurationMs / 10)
+		}, 10)
+	}
 
 	const handleBlur = (onBlur: () => void) => {
 		if (!readOnly) {
@@ -60,6 +74,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		handleBlur,
 		setReadOnly,
 		dummyInputRef,
-		handleSubmit: form.handleSubmit(onSubmit)
+		handleSubmit: form.handleSubmit(onSubmit),
+		animationDuration
 	}
 }

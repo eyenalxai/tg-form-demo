@@ -18,15 +18,25 @@ export const AnimatedFormText = () => {
 		setIsOpen(true)
 	}
 
-	const { form, isMobile, isDisabled, focusedField, readOnly, handleFocus, handleBlur, dummyInputRef, handleSubmit } =
-		useAnimatedForm(TextFormSchema, textFormDefaultValues, onSubmit)
+	const {
+		form,
+		isMobile,
+		isDisabled,
+		focusedField,
+		readOnly,
+		handleFocus,
+		handleBlur,
+		dummyInputRef,
+		handleSubmit,
+		animationDuration
+	} = useAnimatedForm(TextFormSchema, textFormDefaultValues, onSubmit)
 
 	return (
 		<Form {...form}>
 			<MotionConfig
 				transition={{
 					type: "spring",
-					duration: 0.4,
+					duration: animationDuration,
 					bounce: 0.1
 				}}
 			>
@@ -77,7 +87,7 @@ export const AnimatedFormText = () => {
 													readOnly={readOnly}
 													disabled={isDisabled(field.name)}
 													placeholder={field.name}
-													onFocus={() => handleFocus(name)}
+													onFocus={() => handleFocus(name, "")}
 													onBlur={() => handleBlur(onBlur)}
 													{...field}
 												/>
