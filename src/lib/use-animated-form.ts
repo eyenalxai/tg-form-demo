@@ -17,6 +17,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 	const [focusedField, setFocusedField] = useState<Path<Output> | null>(null)
 	const [readOnly, setReadOnly] = useState(true)
 	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
+	const [placeholder, setPlaceholder] = useState(null)
 
 	const form = useForm<Output>({
 		resolver: zodResolver(schema),
@@ -43,6 +44,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		if (focusedField !== field) {
 			if (options && isIOS) {
 				const currentValue = form.getValues(field)
+				setPlaceholder(currentValue)
 
 				form.setValue(field, options.focusHackDefaultValue)
 
@@ -52,6 +54,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 					setTimeout(() => {
 						form.setFocus(field)
 						setTimeout(() => {
+							setPlaceholder(null)
 							form.setValue(field, currentValue)
 						}, animationDurationMs * 0.1)
 					}, animationDurationMs * 0.9)
@@ -82,6 +85,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		isDisabled: (field: Path<Output>) => isMobile && focusedField !== null && focusedField !== field,
 		focusedField,
 		readOnly: isMobile && readOnly,
+		placeholder,
 		handleFocus,
 		handleBlur,
 		setReadOnly,
