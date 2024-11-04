@@ -65,6 +65,7 @@ export const AnimatedFormMulti = () => {
 								name={name}
 								render={({ field: { onBlur, ...field } }) => (
 									<AnimatedContainer
+										layoutId={field.name}
 										isMoved={focusedField === field.name}
 										anotherMoved={focusedField !== null && focusedField !== field.name}
 										className={cn("bg-background")}

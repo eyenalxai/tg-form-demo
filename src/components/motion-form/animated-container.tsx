@@ -5,12 +5,13 @@ import { type ReactNode, useEffect, useRef, useState } from "react"
 
 type AnimatedContainerProps = {
 	children: ReactNode
+	layoutId: string
 	isMoved: boolean
 	anotherMoved: boolean
 	className?: string
 }
 
-export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }: AnimatedContainerProps) => {
+export const AnimatedContainer = ({ children, layoutId, isMoved, anotherMoved, className }: AnimatedContainerProps) => {
 	const [zIndex, setZIndex] = useState(0)
 	const [targetY, setTargetY] = useState(0)
 
@@ -69,6 +70,7 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 			<motion.div
 				ref={elementRef}
 				layout={"position"}
+				layoutId={`animated-container-${layoutId}`}
 				className={cn("w-full", "will-change-[transform,border-radius]")}
 			>
 				{children}
@@ -79,6 +81,7 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 		<motion.div
 			ref={elementRef}
 			layout={anotherMoved ? undefined : "position"}
+			layoutId={`animated-container-${layoutId}`}
 			className={cn(className, "will-change-[transform,border-radius]")}
 			animate={{
 				y: isMoved && isMobile ? targetY : 0
