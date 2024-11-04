@@ -7,9 +7,13 @@ import type { ZodType, ZodTypeDef } from "zod"
 export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input>, Output extends FieldValues, Input>(
 	schema: Schema,
 	defaultValues: DefaultValues<Output>,
-	onSubmit: (values: Output) => void
+	onSubmit: (values: Output) => void,
+	preFocusStyles?: string[]
 ) => {
-	const animationDuration = 0.4
+	const iOSFocusDelay = 25
+	const iOSFocusTransitionFactor = 0.95
+
+	const animationDuration = 0.4 + iOSFocusDelay / 1000
 	const animationDurationMs = animationDuration * 1000
 
 	const isMobile = useIsMobile()
@@ -53,12 +57,10 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 
 					setTimeout(() => {
 						form.setFocus(field)
-						setTimeout(() => {
-							setPlaceholder(null)
-							form.setValue(field, currentValue)
-						}, animationDurationMs * 0.1)
-					}, animationDurationMs * 0.9)
-				}, 50)
+						setPlaceholder(null)
+						form.setValue(field, currentValue)
+					}, animationDurationMs)
+				}, iOSFocusDelay)
 
 				return
 			}
@@ -91,6 +93,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		setReadOnly,
 		dummyInputRef,
 		handleSubmit: form.handleSubmit(onSubmit),
-		animationDuration
+		animationDuration,
+		preFocusStyles: placeholder ? (preFocusStyles ? preFocusStyles : undefined) : []
 	}
 }
