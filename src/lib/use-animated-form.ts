@@ -43,9 +43,19 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		}
 	}, [animationDurationMs, isMobile, focusedField, form])
 
-	const handleFocus = (field: Path<Output>, defaultValue: PathValue<Output, Path<Output>>) => {
+	type HandleFocusOptions = {
+		defaultValue: PathValue<Output, Path<Output>>
+		focusHack: true
+	}
+
+	const handleFocus = (field: Path<Output>, options?: HandleFocusOptions) => {
+		if (!options) {
+			setFocusedField(field)
+			return
+		}
+
 		const currentValue = form.getValues()[field]
-		form.setValue(field, defaultValue)
+		form.setValue(field, options.defaultValue)
 
 		setTimeout(() => {
 			setFocusedField(field)
