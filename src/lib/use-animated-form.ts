@@ -4,14 +4,17 @@ import { useRef, useState } from "react"
 import { type DefaultValues, type FieldValues, type Path, type PathValue, useForm } from "react-hook-form"
 import type { ZodType, ZodTypeDef } from "zod"
 
+type UseAnimatedFormOptions = {
+	preFocusStylesIOS?: string[]
+}
+
 export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input>, Output extends FieldValues, Input>(
 	schema: Schema,
 	defaultValues: DefaultValues<Output>,
 	onSubmit: (values: Output) => void,
-	preFocusStyles?: string[]
+	options?: UseAnimatedFormOptions
 ) => {
 	const iOSFocusDelay = 25
-	const iOSFocusTransitionFactor = 0.95
 
 	const animationDuration = 0.4 + iOSFocusDelay / 1000
 	const animationDurationMs = animationDuration * 1000
@@ -94,6 +97,6 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		dummyInputRef,
 		handleSubmit: form.handleSubmit(onSubmit),
 		animationDuration,
-		preFocusStyles: placeholder ? (preFocusStyles ? preFocusStyles : undefined) : []
+		preFocusStylesIOS: placeholder ? (options?.preFocusStylesIOS ? options.preFocusStylesIOS : undefined) : []
 	}
 }
