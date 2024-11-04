@@ -5,7 +5,7 @@ import { type DefaultValues, type FieldValues, type Path, type PathValue, useFor
 import type { ZodType, ZodTypeDef } from "zod"
 
 type UseAnimatedFormOptions = {
-	preFocusStylesIOS?: string[]
+	iOSPreFocusStyles?: string[]
 }
 
 export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input>, Output extends FieldValues, Input>(
@@ -24,7 +24,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 	const [focusedField, setFocusedField] = useState<Path<Output> | null>(null)
 	const [readOnly, setReadOnly] = useState(true)
 	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
-	const [placeholder, setPlaceholder] = useState(null)
+	const [inputPlaceHolder, setInputPlaceHolder] = useState(null)
 
 	const form = useForm<Output>({
 		resolver: zodResolver(schema),
@@ -51,7 +51,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		if (focusedField !== field) {
 			if (options && isIOS) {
 				const currentValue = form.getValues(field)
-				setPlaceholder(currentValue)
+				setInputPlaceHolder(currentValue)
 
 				form.setValue(field, options.focusHackDefaultValue)
 
@@ -60,7 +60,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 
 					setTimeout(() => {
 						form.setFocus(field)
-						setPlaceholder(null)
+						setInputPlaceHolder(null)
 						form.setValue(field, currentValue)
 					}, animationDurationMs)
 				}, iOSFocusDelay)
@@ -90,13 +90,17 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		isDisabled: (field: Path<Output>) => isMobile && focusedField !== null && focusedField !== field,
 		focusedField,
 		readOnly: isMobile && readOnly,
-		placeholder,
+		inputPlaceHolder,
 		handleFocus,
 		handleBlur,
 		setReadOnly,
 		dummyInputRef,
 		handleSubmit: form.handleSubmit(onSubmit),
 		animationDuration,
-		preFocusStylesIOS: placeholder ? (options?.preFocusStylesIOS ? options.preFocusStylesIOS : undefined) : []
+		appliedIOSPreFocusStyles: inputPlaceHolder
+			? options?.iOSPreFocusStyles
+				? options.iOSPreFocusStyles
+				: undefined
+			: []
 	}
 }

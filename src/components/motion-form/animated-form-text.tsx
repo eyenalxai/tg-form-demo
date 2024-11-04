@@ -24,15 +24,15 @@ export const AnimatedFormText = () => {
 		isDisabled,
 		focusedField,
 		readOnly,
-		placeholder,
+		inputPlaceHolder,
 		handleFocus,
 		handleBlur,
 		dummyInputRef,
 		handleSubmit,
 		animationDuration,
-		preFocusStylesIOS
+		appliedIOSPreFocusStyles
 	} = useAnimatedForm(TextFormSchema, textFormDefaultValues, onSubmit, {
-		preFocusStylesIOS: [
+		iOSPreFocusStyles: [
 			"placeholder:text-foreground",
 			"focus-visible:ring-offset-0",
 			"focus-visible:outline-0",
@@ -95,10 +95,10 @@ export const AnimatedFormText = () => {
 												<Input
 													readOnly={readOnly}
 													disabled={isDisabled(field.name)}
-													placeholder={placeholder || field.name}
+													placeholder={inputPlaceHolder || field.name}
 													onFocus={() => handleFocus(field.name, { focusHackDefaultValue: "" })}
 													onBlur={() => handleBlur(onBlur)}
-													className={cn(preFocusStylesIOS)}
+													className={cn(appliedIOSPreFocusStyles)}
 													{...field}
 												/>
 											</FormControl>
