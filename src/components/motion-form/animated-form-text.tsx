@@ -87,7 +87,7 @@ export const AnimatedFormText = () => {
 													readOnly={readOnly}
 													disabled={isDisabled(field.name)}
 													placeholder={field.name}
-													onFocus={() => handleFocus(name, { focusHackDefaultValue: field.value })}
+													onFocus={() => handleFocus(name)}
 													onBlur={() => handleBlur(onBlur)}
 													{...field}
 												/>
