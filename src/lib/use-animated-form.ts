@@ -1,4 +1,4 @@
-import { useIsMobile } from "@/lib/is-mobile"
+import { useIsIOS, useIsMobile } from "@/lib/is-mobile"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
 import { type DefaultValues, type FieldValues, type Path, type PathValue, useForm } from "react-hook-form"
@@ -13,6 +13,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 	const animationDurationMs = animationDuration * 1000
 
 	const isMobile = useIsMobile()
+	const isIOS = useIsIOS()
 	const [focusedField, setFocusedField] = useState<Path<Output> | null>(null)
 	const [readOnly, setReadOnly] = useState(true)
 	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
@@ -44,18 +45,17 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 	}, [animationDurationMs, isMobile, focusedField, form])
 
 	type HandleFocusOptions = {
-		defaultValue: PathValue<Output, Path<Output>>
-		focusHack: true
+		focusHackDefaultValue: PathValue<Output, Path<Output>>
 	}
 
 	const handleFocus = (field: Path<Output>, options?: HandleFocusOptions) => {
-		if (!options) {
+		if (!options || !isIOS) {
 			setFocusedField(field)
 			return
 		}
 
 		const currentValue = form.getValues()[field]
-		form.setValue(field, options.defaultValue)
+		form.setValue(field, options.focusHackDefaultValue)
 
 		setTimeout(() => {
 			setFocusedField(field)
