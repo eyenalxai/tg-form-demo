@@ -6,11 +6,10 @@ import { type ReactNode, useEffect, useRef, useState } from "react"
 type AnimatedContainerProps = {
 	children: ReactNode
 	isMoved: boolean
-	anotherMoved?: boolean
 	className?: string
 }
 
-export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }: AnimatedContainerProps) => {
+export const AnimatedContainer = ({ children, isMoved, className }: AnimatedContainerProps) => {
 	const [zIndex, setZIndex] = useState(0)
 	const [targetY, setTargetY] = useState(0)
 
@@ -86,8 +85,12 @@ export const AnimatedContainer = ({ children, isMoved, anotherMoved, className }
 		>
 			<div
 				className={cn(
-					["transition-all", "duration-200", "ease-in-out"],
-					anotherMoved && "opacity-30",
+					[
+						"transition-[padding,box-shadow,border-radius]",
+						"will-change-[padding,box-shadow,border-radius]",
+						"duration-200",
+						"ease-in-out"
+					],
 					isMoved && ["p-4", "pt-2", "shadow-elevated", "rounded-md"]
 				)}
 			>
