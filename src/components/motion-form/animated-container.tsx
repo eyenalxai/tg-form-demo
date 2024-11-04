@@ -65,7 +65,11 @@ export const AnimatedContainer = ({ children, isMoved, className }: AnimatedCont
 
 	if (!isMobile)
 		return (
-			<motion.div ref={elementRef} layout={"position"} className={cn("w-full")}>
+			<motion.div
+				ref={elementRef}
+				layout={"position"}
+				className={cn("w-full", "will-change-[transform,border-radius]")}
+			>
 				{children}
 			</motion.div>
 		)
@@ -74,7 +78,7 @@ export const AnimatedContainer = ({ children, isMoved, className }: AnimatedCont
 		<motion.div
 			ref={elementRef}
 			layout={"position"}
-			className={cn(className)}
+			className={cn(className, "will-change-[transform,border-radius]")}
 			animate={{
 				y: isMoved && isMobile ? targetY : 0
 			}}
