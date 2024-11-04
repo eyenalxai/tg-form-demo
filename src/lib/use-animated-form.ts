@@ -1,4 +1,4 @@
-import { useIsMobile } from "@/lib/is-mobile"
+import { useIsIOS, useIsMobile } from "@/lib/is-mobile"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRef, useState } from "react"
 import { type DefaultValues, type FieldValues, type Path, type PathValue, useForm } from "react-hook-form"
@@ -13,6 +13,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 	const animationDurationMs = animationDuration * 1000
 
 	const isMobile = useIsMobile()
+	const isIOS = useIsIOS()
 	const [focusedField, setFocusedField] = useState<Path<Output> | null>(null)
 	const [readOnly, setReadOnly] = useState(true)
 	const dummyInputRef = useRef<HTMLTextAreaElement | null>(null)
@@ -26,33 +27,45 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 		focusHackDefaultValue: PathValue<Output, Path<Output>>
 	}
 
+	const handleFieldFocus = (field: Path<Output>) => {
+		setFocusedField(field)
+		setReadOnly(false)
+
+		if (dummyInputRef.current) dummyInputRef.current.focus()
+	}
+
 	const handleFocus = (field: Path<Output>, options?: HandleFocusOptions) => {
 		if (!isMobile) {
 			form.setFocus(field)
 			return
 		}
 
-		const currentValue = form.getValues(field)
+		if (focusedField !== field) {
+			if (options && isIOS) {
+				const currentValue = form.getValues(field)
 
-		if (options) {
-			form.setValue(field, options.focusHackDefaultValue)
-		}
-
-		setTimeout(() => {
-			if (focusedField !== field) {
-				setFocusedField(field)
-				setReadOnly(false)
-
-				if (dummyInputRef.current) dummyInputRef.current.focus()
+				form.setValue(field, options.focusHackDefaultValue)
 
 				setTimeout(() => {
-					form.setFocus(field)
+					handleFieldFocus(field)
+
 					setTimeout(() => {
-						form.setValue(field, currentValue)
-					}, animationDurationMs * 0.1)
-				}, animationDurationMs * 0.9)
+						form.setFocus(field)
+						setTimeout(() => {
+							form.setValue(field, currentValue)
+						}, animationDurationMs * 0.1)
+					}, animationDurationMs * 0.9)
+				}, 50)
+
+				return
 			}
-		}, 50)
+
+			handleFieldFocus(field)
+
+			setTimeout(() => {
+				form.setFocus(field)
+			}, animationDurationMs)
+		}
 	}
 
 	const handleBlur = (onBlur: () => void) => {
