@@ -32,8 +32,6 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 			setFocusedField(field)
 			setReadOnly(false)
 
-			form.setFocus(field)
-
 			if (dummyInputRef.current) dummyInputRef.current.focus()
 
 			setTimeout(() => {
