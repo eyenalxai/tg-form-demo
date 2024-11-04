@@ -32,7 +32,7 @@ export const useAnimatedForm = <Schema extends ZodType<Output, ZodTypeDef, Input
 
 			const timeoutId = setTimeout(() => {
 				form.setFocus(focusedField)
-			}, 300)
+			}, 400)
 
 			return () => {
 				clearTimeout(timeoutId)
