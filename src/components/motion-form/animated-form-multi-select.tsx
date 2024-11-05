@@ -19,7 +19,7 @@ export const AnimatedFormMultiSelect = () => {
 		setIsOpen(true)
 	}
 
-	const { form, isMobile, focusedField, dummyInputRef, handleSubmit, animationDuration } = useAnimatedForm(
+	const { form, isMobile, focusedField, dummyInputRef, handleSubmit, animationDuration, isDisabled } = useAnimatedForm(
 		MultiFormSchema,
 		multiFormDefaultValues,
 		onSubmit
@@ -59,6 +59,7 @@ export const AnimatedFormMultiSelect = () => {
 										<FormControl>
 											<MultiSelect
 												variant={"default"}
+												disabled={isDisabled(field.name)}
 												options={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
 												placeholder={field.name}
 												{...field}

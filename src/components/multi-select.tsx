@@ -1,38 +1,27 @@
 import { type VariantProps, cva } from "class-variance-authority"
-import { CheckIcon, ChevronDown, XIcon } from "lucide-react"
+import { CheckIcon, ChevronDown } from "lucide-react"
 import * as React from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-	Command,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-	CommandSeparator
-} from "@/components/ui/command"
+import { Command, CommandGroup, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import type { ButtonHTMLAttributes } from "react"
 
-const multiSelectVariants = cva(
-	"m-1 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110",
-	{
-		variants: {
-			variant: {
-				default: "border-foreground/10 bg-card text-foreground hover:bg-card/80",
-				secondary: "border-foreground/10 bg-secondary text-secondary-foreground hover:bg-secondary/80",
-				destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-				inverted: "inverted"
-			}
-		},
-		defaultVariants: {
-			variant: "default"
+const multiSelectVariants = cva("m-1 transition duration-150 ease-in-out", {
+	variants: {
+		variant: {
+			default: "bg-silver hover:bg-silver border text-foreground",
+			secondary: "border-foreground/10 bg-secondary text-secondary-foreground",
+			destructive: "border-transparent bg-destructive text-destructive-foreground",
+			inverted: "inverted"
 		}
+	},
+	defaultVariants: {
+		variant: "default"
 	}
-)
+})
 
 interface MultiSelectProps
 	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onChange">,
@@ -82,13 +71,13 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 		}
 
 		return (
-			<Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-				<PopoverTrigger asChild>
+			<Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen} modal>
+				<PopoverTrigger disabled={props.disabled} asChild>
 					<Button
 						ref={ref}
 						onClick={handleTogglePopover}
 						className={cn(
-							"flex h-auto min-h-10 w-full items-center justify-between rounded-md border bg-inherit p-1 hover:bg-inherit",
+							"flex h-auto min-h-10 w-full items-center justify-between rounded-md border bg-white p-1 hover:bg-white",
 							className
 						)}
 						{...props}
@@ -107,7 +96,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 									{selectedValues.length > maxCount && (
 										<Badge
 											className={cn(
-												"border-foreground/1 bg-transparent text-foreground hover:bg-transparent",
+												"border-black/1 text-foreground bg-silver hover:bg-silver",
 												multiSelectVariants({ variant })
 											)}
 										>
@@ -138,10 +127,10 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 								{options.map((option) => {
 									const isSelected = selectedValues.includes(option)
 									return (
-										<CommandItem key={option} onSelect={() => toggleOption(option)} className="cursor-pointer my-1">
+										<CommandItem key={option} onSelect={() => toggleOption(option)} className="my-1 cursor-pointer">
 											<div
 												className={cn(
-													"mr-2 my-0.5 flex size-5 items-center justify-center rounded-sm border border-primary",
+													"my-0.5 mr-2 flex size-5 items-center justify-center rounded-sm border border-primary",
 													isSelected ? "bg-primary text-primary-foreground" : "opacity-50 [&_svg]:invisible"
 												)}
 											>
