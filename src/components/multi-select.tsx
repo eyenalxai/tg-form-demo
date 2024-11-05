@@ -96,7 +96,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 									{selectedValues.length > maxCount && (
 										<Badge
 											className={cn(
-												"border-black/1 text-foreground bg-silver hover:bg-silver",
+												"border-black/1 bg-silver hover:bg-silver text-foreground",
 												multiSelectVariants({ variant })
 											)}
 										>
