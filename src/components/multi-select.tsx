@@ -4,7 +4,15 @@ import * as React from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Command, CommandGroup, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command"
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+	CommandSeparator
+} from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import type { ButtonHTMLAttributes } from "react"
@@ -130,16 +138,15 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 								{options.map((option) => {
 									const isSelected = selectedValues.includes(option)
 									return (
-										<CommandItem key={option} onSelect={() => toggleOption(option)} className="cursor-pointer">
+										<CommandItem key={option} onSelect={() => toggleOption(option)} className="cursor-pointer my-1">
 											<div
 												className={cn(
-													"mr-2 flex size-4 items-center justify-center rounded-sm border border-primary",
+													"mr-2 my-0.5 flex size-5 items-center justify-center rounded-sm border border-primary",
 													isSelected ? "bg-primary text-primary-foreground" : "opacity-50 [&_svg]:invisible"
 												)}
 											>
-												<CheckIcon className="size-4" />
+												<CheckIcon className="size-5" />
 											</div>
-
 											<span>{option}</span>
 										</CommandItem>
 									)
