@@ -21,7 +21,7 @@ export const NavigationBar = () => {
 				"fixed",
 				"bg-white",
 				"bottom-0",
-				["w-full", isIOS && !isIpad ? ["h-[124px]", "pb-6"] : "h-[104px]"],
+				["w-full", isIOS && !isIpad ? ["h-[164px]", "pb-6"] : "h-[144px]"],
 				"grid",
 				"grid-cols-2",
 				"gap-2",
@@ -43,6 +43,9 @@ export const NavigationBar = () => {
 			</Button>
 			<Button variant={pathname === "/animated-multi" ? "default" : "outline"} asChild>
 				<Link href={"/animated-multi"}>Animated Multi</Link>
+			</Button>
+			<Button variant={pathname === "/multi-select" ? "default" : "outline"} className={cn("col-span-2")} asChild>
+				<Link href={"/multi-select"}>Multi Select</Link>
 			</Button>
 		</nav>
 	)
