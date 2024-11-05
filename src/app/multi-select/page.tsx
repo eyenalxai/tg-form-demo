@@ -1,6 +1,5 @@
-import { DefaultForm } from "@/components/default-form"
-import { MultipleSelector } from "@/components/multi-select"
+import { AnimatedFormMultiSelect } from "@/components/animated-form-multi-select"
 
 export default function Page() {
-	return <MultipleSelector />
+	return <AnimatedFormMultiSelect />
 }
