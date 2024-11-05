@@ -4,8 +4,6 @@ import { MultiSelect } from "@/components/multi-select"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { MultiFormSchema, multiFormDefaultValues, multiFormFields } from "@/lib/multi-form"
-
-import { AnimatedContainer } from "@/components/motion-form/animated-container"
 import { useAnimatedForm } from "@/lib/use-animated-form"
 import { useDrawer } from "@/lib/use-drawer"
 import { cn } from "@/lib/utils"
@@ -19,7 +17,7 @@ export const AnimatedFormMultiSelect = () => {
 		setIsOpen(true)
 	}
 
-	const { form, isMobile, focusedField, dummyInputRef, handleSubmit, animationDuration, isDisabled } = useAnimatedForm(
+	const { form, isMobile, isDisabled, focusedField, dummyInputRef, handleSubmit, animationDuration } = useAnimatedForm(
 		MultiFormSchema,
 		multiFormDefaultValues,
 		onSubmit
@@ -53,7 +51,7 @@ export const AnimatedFormMultiSelect = () => {
 								key={name}
 								control={form.control}
 								name={name}
-								render={({ field: { onBlur, ...field } }) => (
+								render={({ field }) => (
 									<FormItem>
 										<FormLabel className={cn("z-0")}>{field.name}</FormLabel>
 										<FormControl>
