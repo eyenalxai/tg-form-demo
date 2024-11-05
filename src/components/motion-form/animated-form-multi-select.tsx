@@ -19,18 +19,11 @@ export const AnimatedFormMultiSelect = () => {
 		setIsOpen(true)
 	}
 
-	const {
-		form,
-		isMobile,
-		isDisabled,
-		focusedField,
-		readOnly,
-		handleFocus,
-		handleBlur,
-		dummyInputRef,
-		handleSubmit,
-		animationDuration
-	} = useAnimatedForm(MultiFormSchema, multiFormDefaultValues, onSubmit)
+	const { form, isMobile, focusedField, dummyInputRef, handleSubmit, animationDuration } = useAnimatedForm(
+		MultiFormSchema,
+		multiFormDefaultValues,
+		onSubmit
+	)
 
 	return (
 		<Form {...form}>
@@ -61,27 +54,17 @@ export const AnimatedFormMultiSelect = () => {
 								control={form.control}
 								name={name}
 								render={({ field: { onBlur, ...field } }) => (
-									<AnimatedContainer
-										layoutId={field.name}
-										isMoved={focusedField === field.name}
-										anotherMoved={focusedField !== null && focusedField !== field.name}
-										className={cn("bg-background")}
-									>
-										<FormItem>
-											<FormLabel className={cn("z-0")}>{field.name}</FormLabel>
-											<FormControl>
-												<MultiSelect
-													options={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
-													readOnly={readOnly}
-													disabled={isDisabled(field.name)}
-													placeholder={field.name}
-													onFocus={() => handleFocus(name)}
-													onBlur={() => handleBlur(onBlur)}
-													{...field}
-												/>
-											</FormControl>
-										</FormItem>
-									</AnimatedContainer>
+									<FormItem>
+										<FormLabel className={cn("z-0")}>{field.name}</FormLabel>
+										<FormControl>
+											<MultiSelect
+												variant={"default"}
+												options={["2", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
+												placeholder={field.name}
+												{...field}
+											/>
+										</FormControl>
+									</FormItem>
 								)}
 							/>
 						)
