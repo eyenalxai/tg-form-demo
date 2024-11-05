@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Command, CommandGroup, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
-import type { ButtonHTMLAttributes } from "react"
+import { type ButtonHTMLAttributes, forwardRef, useState } from "react"
 
 const multiSelectVariants = cva("m-1 transition duration-150 ease-in-out", {
 	variants: {
@@ -35,7 +35,7 @@ interface MultiSelectProps
 	className?: string
 }
 
-export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
+export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProps>(
 	(
 		{
 			options,
@@ -50,8 +50,8 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 		},
 		ref
 	) => {
-		const [selectedValues, setSelectedValues] = React.useState<string[]>(value)
-		const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
+		const [selectedValues, setSelectedValues] = useState<string[]>(value)
+		const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
 		const toggleOption = (option: string) => {
 			const newSelectedValues = selectedValues.includes(option)
