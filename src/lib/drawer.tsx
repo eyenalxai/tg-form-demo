@@ -27,7 +27,7 @@ export const DrawerContextProvider = ({ children }: DrawerContextProviderProps) 
 	)
 }
 
-export const useDrawer = () => {
+export const drawer = () => {
 	const context = useContext(DrawerContext)
 	if (context === undefined) {
 		throw new Error("useDrawer must be used within a DrawerContextProvider")

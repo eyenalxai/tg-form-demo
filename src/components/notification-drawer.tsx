@@ -10,10 +10,10 @@ import {
 	DrawerHeader,
 	DrawerTitle
 } from "@/components/ui/drawer"
-import { useDrawer } from "@/lib/use-drawer"
+import { drawer } from "@/lib/drawer"
 
 export const NotificationDrawer = () => {
-	const { isOpen, setIsOpen } = useDrawer()
+	const { isOpen, setIsOpen } = drawer()
 
 	return (
 		<Drawer

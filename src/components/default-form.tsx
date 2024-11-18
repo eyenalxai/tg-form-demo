@@ -3,8 +3,8 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { drawer } from "@/lib/drawer"
 import { TextFormSchema, textFormDefaultValues, textFormFields } from "@/lib/text-form"
-import { useDrawer } from "@/lib/use-drawer"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -20,7 +20,7 @@ export const DefaultForm = ({ className }: DefaultFormProps) => {
 		defaultValues: textFormDefaultValues
 	})
 
-	const { setIsOpen } = useDrawer()
+	const { setIsOpen } = drawer()
 
 	function onSubmit(_values: z.infer<typeof TextFormSchema>) {
 		setIsOpen(true)

@@ -1,4 +1,4 @@
-import { useIsIOS, useIsMobile } from "@/lib/is-mobile"
+import { useIsIOS, useIsMobile } from "@/lib/mobile"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRef, useState } from "react"
 import { type DefaultValues, type FieldValues, type Path, type PathValue, useForm } from "react-hook-form"

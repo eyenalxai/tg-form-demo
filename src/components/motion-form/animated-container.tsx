@@ -1,4 +1,4 @@
-import { useIsMobile } from "@/lib/is-mobile"
+import { useIsMobile } from "@/lib/mobile"
 import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
 import { type ReactNode, useEffect, useRef, useState } from "react"

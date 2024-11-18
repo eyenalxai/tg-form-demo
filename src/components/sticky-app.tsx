@@ -1,7 +1,7 @@
 "use client"
 
 import { NavigationBar } from "@/components/navigation-bar"
-import { useIsMobile } from "@/lib/is-mobile"
+import { useIsMobile } from "@/lib/mobile"
 import { cn } from "@/lib/utils"
 import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
 import { useSwipeBehavior } from "@telegram-apps/sdk-react"

@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { useIsIOS, useIsIpad } from "@/lib/is-mobile"
+import { useIsIOS, useIsIpad } from "@/lib/mobile"
 import { cn } from "@/lib/utils"
 import { useVirtualKeyboardVisibility } from "@/lib/virtual-keyboard"
 import Link from "next/link"

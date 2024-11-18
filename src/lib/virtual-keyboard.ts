@@ -1,6 +1,6 @@
 "use client"
 
-import { useIsIpad, useIsMobile } from "@/lib/is-mobile"
+import { useIsIpad, useIsMobile } from "@/lib/mobile"
 import { useEffect, useRef, useState, useSyncExternalStore } from "react"
 
 const isKeyboardInput = (elem: HTMLElement) =>

@@ -4,15 +4,15 @@ import { AnimatedContainer } from "@/components/motion-form/animated-container"
 import { MultiValueInput } from "@/components/multi-value-input"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { useAnimatedForm } from "@/lib/animated-form"
+import { drawer } from "@/lib/drawer"
 import { MultiFormSchema, multiFormDefaultValues, multiFormFields } from "@/lib/multi-form"
-import { useAnimatedForm } from "@/lib/use-animated-form"
-import { useDrawer } from "@/lib/use-drawer"
 import { cn } from "@/lib/utils"
 import { MotionConfig, motion } from "framer-motion"
 import type { z } from "zod"
 
 export const AnimatedFormMulti = () => {
-	const { setIsOpen } = useDrawer()
+	const { setIsOpen } = drawer()
 
 	const onSubmit = (_values: z.infer<typeof MultiFormSchema>) => {
 		setIsOpen(true)
